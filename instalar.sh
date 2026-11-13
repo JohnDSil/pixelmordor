@@ -67,6 +67,15 @@ if [ -d "$AQUI/icons/Mordor" ]; then
     mkdir -p "$HOME/.local/share/icons/Mordor"
     cp -r "$AQUI/icons/Mordor/"* "$HOME/.local/share/icons/Mordor/"
     gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Mordor" 2>/dev/null || true
+    gsettings set org.gnome.desktop.interface icon-theme 'Mordor' 2>/dev/null || true
+fi
+
+# Instalar esquema de colores para Neovim / Vim
+if [ -d "$AQUI/nvim" ]; then
+    mkdir -p "$HOME/.config/nvim/colors" "$HOME/.config/nvim/lua/mordor" "$HOME/.vim/colors"
+    cp "$AQUI/nvim/colors/mordor.vim" "$HOME/.config/nvim/colors/" 2>/dev/null || true
+    cp "$AQUI/nvim/colors/mordor.vim" "$HOME/.vim/colors/" 2>/dev/null || true
+    cp "$AQUI/nvim/lua/mordor/init.lua" "$HOME/.config/nvim/lua/mordor/" 2>/dev/null || true
 fi
 
 # Instalar plantilla de Fastfetch

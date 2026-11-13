@@ -5,9 +5,9 @@ __mordor_git_branch() {
     local b
     if b=$(git symbolic-ref --short HEAD 2>/dev/null); then
         if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-            echo -e " \[\033[1;31m\](${b} 🌋)\[\033[0m\]"
+            echo " \[\033[1;31m\](${b} 🌋)\[\033[0m\]"
         else
-            echo -e " \[\033[1;33m\](${b} 💍)\[\033[0m\]"
+            echo " \[\033[1;33m\](${b} 💍)\[\033[0m\]"
         fi
     fi
 }

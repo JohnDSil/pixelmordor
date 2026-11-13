@@ -2,7 +2,7 @@
 Name=Mordor
 Comment=Tema de iconos temáticos de Mordor (El Señor de los Anillos)
 Inherits=Adwaita,Yaru,breeze,hicolor
-Directories=places/48,places/128
+Directories=places/48,places/128,48x48/places,128x128/places
 
 [places/48]
 Size=48
@@ -10,6 +10,16 @@ Type=Fixed
 Context=Places
 
 [places/128]
+Size=128
+Type=Fixed
+Context=Places
+
+[48x48/places]
+Size=48
+Type=Fixed
+Context=Places
+
+[128x128/places]
 Size=128
 Type=Fixed
 Context=Places

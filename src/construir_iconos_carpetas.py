@@ -13,15 +13,17 @@ REPO_DIR = '/home/2asird/Descargas/pixelmordor'
 ICONS_BASE = os.path.join(REPO_DIR, 'icons', 'Mordor')
 DIR_48 = os.path.join(ICONS_BASE, 'places', '48')
 DIR_128 = os.path.join(ICONS_BASE, 'places', '128')
-os.makedirs(DIR_48, exist_ok=True)
-os.makedirs(DIR_128, exist_ok=True)
+DIR_48_ALT = os.path.join(ICONS_BASE, '48x48', 'places')
+DIR_128_ALT = os.path.join(ICONS_BASE, '128x128', 'places')
+for d in [DIR_48, DIR_128, DIR_48_ALT, DIR_128_ALT]:
+    os.makedirs(d, exist_ok=True)
 
 # index.theme
 index_theme = """[Icon Theme]
 Name=Mordor
 Comment=Tema de iconos temáticos de Mordor (El Señor de los Anillos)
 Inherits=Adwaita,Yaru,breeze,hicolor
-Directories=places/48,places/128
+Directories=places/48,places/128,48x48/places,128x128/places
 
 [places/48]
 Size=48
@@ -29,6 +31,16 @@ Type=Fixed
 Context=Places
 
 [places/128]
+Size=128
+Type=Fixed
+Context=Places
+
+[48x48/places]
+Size=48
+Type=Fixed
+Context=Places
+
+[128x128/places]
 Size=128
 Type=Fixed
 Context=Places
@@ -142,12 +154,18 @@ ALIASES = {
 
 def construir_iconos():
     print("==> Generando tema de iconos Mordor para GNOME Files...")
-    for size, target_dir in [(48, DIR_48), (128, DIR_128)]:
+    targets = [
+        (48, DIR_48),
+        (128, DIR_128),
+        (48, DIR_48_ALT),
+        (128, DIR_128_ALT)
+    ]
+    for size, target_dir in targets:
         for ico_name in ICONOS:
             im = genera_icono(ico_name, size)
             f_path = os.path.join(target_dir, f"{ico_name}.png")
             im.save(f_path, 'PNG')
-            # Crear enlaces o copias para aliases
+            # Crear copias para aliases
             if ico_name in ALIASES:
                 for alias in ALIASES[ico_name]:
                     im.save(os.path.join(target_dir, f"{alias}.png"), 'PNG')

@@ -531,6 +531,12 @@ else:
             rm -f "$HOME/.config/nvim/colors/mordor.vim" "$HOME/.vim/colors/mordor.vim"
             rm -rf "$HOME/.config/nvim/lua/mordor"
             echo -e "\033[1;30m⌨️ Tema Mordor para Neovim / Vim desactivado.\033[0m"
+        elif [ "$sub" = "estado" ]; then
+            if [ -f "$HOME/.config/nvim/colors/mordor.vim" ] || [ -f "$HOME/.vim/colors/mordor.vim" ]; then
+                echo -e "⌨️ Tema Mordor para Neovim / Vim: \033[1;32mINSTALADO\033[0m (~/.config/nvim/colors/mordor.vim)"
+            else
+                echo -e "⌨️ Tema Mordor para Neovim / Vim: \033[1;30mNO INSTALADO\033[0m"
+            fi
         else
             if [ -z "$NVIM_SRC" ]; then
                 echo -e "\033[1;31mError:\033[0m Directorio nvim no encontrado."
@@ -611,6 +617,9 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         ico_st="Estándar"
         [ "$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | tr -d "'")" = "Mordor" ] && ico_st="Activo (Mordor / Nautilus)"
         echo "  • Tema de Iconos Carpetas: $ico_st"
+        nvim_st="No instalado"
+        ([ -f "$HOME/.config/nvim/colors/mordor.vim" ] || [ -f "$HOME/.vim/colors/mordor.vim" ]) && nvim_st="Instalado (Vim/Neovim)"
+        echo "  • Esquema Colores Neovim/Vim: $nvim_st"
         bell_st="Inactiva"
         [ -f "$HOME/.config/pixelzen/campana_activa" ] && bell_st="Activa (Feedback acústico en comandos)"
         echo "  • Campana Reactiva Terminal: $bell_st"
