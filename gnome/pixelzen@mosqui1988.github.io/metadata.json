@@ -1,9 +1,9 @@
 {
   "uuid": "pixelzen@mosqui1988.github.io",
-  "name": "PixelZen",
-  "description": "Fondo pixel art animado que sigue al sol de tu ciudad y panel de datos del sistema (RAM, CPU, batería, red). Port para GNOME del tema PixelZen de KDE Plasma 6.",
-  "shell-version": ["46", "47", "48"],
-  "url": "https://github.com/mosqui1988/pixelzen",
+  "name": "PixelMordor",
+  "description": "Fondo animado en pixel art de la Tierra de Mordor (El Señor de los Anillos) que sigue la posición solar real, Ojo de Sauron con eye-tracking, partículas volcánicas, sonido integrado, alertas y panel HUD.",
+  "shell-version": ["45", "46", "47", "48"],
+  "url": "https://github.com/JohnDSil/pixelmordor",
   "settings-schema": "org.gnome.shell.extensions.pixelzen",
-  "version": 1
+  "version": 2
 }

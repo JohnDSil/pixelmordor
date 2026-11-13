@@ -1,0 +1,7 @@
+[Sound Theme]
+Name=Mordor
+Comment=Tema de sonido oficial de la Tierra de Mordor (El Señor de los Anillos)
+Directories=stereo
+
+[stereo]
+OutputProfile=stereo

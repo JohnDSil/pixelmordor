@@ -119,6 +119,9 @@ mordor clima     # Consultar clima real sincronizado (Open-Meteo)
 mordor terminal  # Aplicar paleta oficial de Mordor a Ptyxis
 mordor notif     # Enviar notificación de prueba de Sauron
 mordor bloqueo   # Configurar o probar pantalla de bloqueo (Morannon)
+mordor prompt    # Alternar prompt temático de Mordor en Bash
+mordor sonido    # Alternar tema de sonido XDG para eventos de sistema
+mordor forjar    # Animación interactiva de la Forja del Anillo Único
 ```
 
 ---
@@ -142,6 +145,19 @@ mordor bloqueo   # Configurar o probar pantalla de bloqueo (Morannon)
    - Opción en el menú superior de GNOME y comando CLI: `mordor bloqueo`.
 
    ![Pantalla de Bloqueo de Mordor: El Morannon](capturas/mordor-bloqueo.png)
+
+6. **🔊 Tema Oficial de Sonidos XDG (FreeDesktop / GNOME):**
+   - Mapeo completo en `~/.local/share/sounds/mordor/` para eventos nativos del sistema:
+     - Conectar cargador o dispositivo USB: tintineo del Anillo (`anillo.wav`).
+     - Vaciar la papelera: rugido de magma volcánico (`erupcion.wav`).
+     - Alertas y errores de diálogo: gong siniestro de Barad-dûr (`sauron.wav`).
+     - Ventana solicitando atención: chillido del Nazgûl (`nazgul.wav`).
+7. **🐚 Prompt Temático de Terminal para Bash:**
+   - Prompt interactivo configurable con `mordor prompt on/off` que incluye el Ojo de Sauron `👁`, estado de Git dinámico (`💍` si el repositorio está limpio, `🌋` si hay cambios) y flecha reactiva en oro o rojo sangre según el código de salida.
+8. **💍 Animación Terminal: La Forja del Anillo (`mordor forjar`):**
+   - Animación interactiva en ASCII 3D y colores ANSI de la forja del Anillo Único en Orodruin con versos en Tengwar y efectos de sonido.
+9. **📦 Paquete EGO Oficial para extensions.gnome.org:**
+   - Archivo `.zip` compilado y validado en `gnome/pixelzen@mosqui1988.github.io.shell-extension.zip` listo para su publicación directa en la tienda oficial de GNOME Extensions.
 
 ---
 

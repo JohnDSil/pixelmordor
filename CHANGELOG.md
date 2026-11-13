@@ -5,6 +5,25 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 
 ---
 
+## [1.4.0] - 2026-11-13
+
+### Añadido
+- **🔊 Tema Oficial de Sonidos XDG (FreeDesktop / GNOME):**
+  - Mapeo completo en `gnome/sound-theme/mordor/` con `index.theme` y perfil estéreo.
+  - Asignación de sonidos para conexión de dispositivos (USB/cargador con tintineo del Anillo), papelera (Orodruin), alertas y errores del sistema (Barad-dûr).
+  - Nuevo subcomando CLI: `mordor sonido [on|off]`.
+- **🐚 Prompt Temático de Terminal para Bash (`mordor prompt`):**
+  - Prompt ligero en `src/mordor_prompt.sh` con el Ojo de Sauron `👁`, estado de Git interactivo (`💍` limpio, `🌋` con cambios) y flecha reactiva en color oro o rojo sangre.
+  - Configurable con `mordor prompt on` y `mordor prompt off`.
+- **💍 Animación Terminal: La Forja del Anillo Único (`mordor forjar`):**
+  - Secuencia de arte ASCII 3D y colorimetría ANSI de la forja del Anillo Único en las llamas del Monte del Destino, con ascuas y versos en lengua negra.
+- **📈 Mini-gráficos Sparkline de Historial en el HUD:**
+  - Telemetría en tiempo real de CPU y memoria RAM con barras incandescentes que alertan de picos de carga.
+- **📦 Paquete Oficial EGO para extensions.gnome.org:**
+  - Compilación y empaquetado del archivo `gnome/pixelzen@mosqui1988.github.io.shell-extension.zip` mediante `gnome-extensions pack`.
+
+---
+
 ## [1.3.0] - 2026-11-13
 
 ### Añadido

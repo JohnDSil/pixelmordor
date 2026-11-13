@@ -169,6 +169,45 @@ case "${1:-info}" in
             busctl --user call org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver Lock 2>/dev/null || true
         fi
         ;;
+    prompt)
+        sub="${2:-toggle}"
+        BASHRC="$HOME/.bashrc"
+        PROMPT_FILE="$HOME/.config/pixelzen/mordor_prompt.sh"
+        if [ "$sub" = "off" ] || ([ "$sub" = "toggle" ] && grep -q "mordor_prompt.sh" "$BASHRC" 2>/dev/null); then
+            sed -i '/mordor_prompt\.sh/d' "$BASHRC"
+            echo -e "\033[1;30m🐚 Prompt de Mordor desactivado en ~/.bashrc (abrir nueva terminal para ver cambios).\033[0m"
+        else
+            mkdir -p "$HOME/.config/pixelzen"
+            PROMPT_SRC="$(dirname "$0")/src/mordor_prompt.sh"
+            [ -f "$PROMPT_SRC" ] && cp "$PROMPT_SRC" "$PROMPT_FILE"
+            if ! grep -q "mordor_prompt.sh" "$BASHRC"; then
+                echo '[ -f "$HOME/.config/pixelzen/mordor_prompt.sh" ] && source "$HOME/.config/pixelzen/mordor_prompt.sh"' >> "$BASHRC"
+            fi
+            echo -e "\033[1;31m👁 Prompt temático de Mordor (Ojo, Git reactivo y runas) activado en ~/.bashrc.\033[0m"
+        fi
+        ;;
+    sonido|audio)
+        sub="${2:-toggle}"
+        cur_theme=$(gsettings get org.gnome.desktop.sound theme-name 2>/dev/null | tr -d "'" || echo "freedesktop")
+        if [ "$sub" = "off" ] || ([ "$sub" = "toggle" ] && [ "$cur_theme" = "mordor" ]); then
+            gsettings set org.gnome.desktop.sound theme-name 'freedesktop' 2>/dev/null || true
+            echo -e "\033[1;30m🔊 Tema de sonido de Mordor desactivado (restaurado freedesktop).\033[0m"
+        else
+            gsettings set org.gnome.desktop.sound theme-name 'mordor' 2>/dev/null || true
+            gsettings set org.gnome.desktop.sound event-sounds true 2>/dev/null || true
+            gsettings set org.gnome.desktop.sound input-feedback-sounds true 2>/dev/null || true
+            suena anillo
+            echo -e "\033[1;31m🔊 Tema oficial de sonido XDG de Mordor activado (eventos de sistema: USB, papelera, alertas).\033[0m"
+        fi
+        ;;
+    forjar)
+        FORJAR_SCRIPT="$(dirname "$0")/src/forjar.py"
+        if [ -f "$FORJAR_SCRIPT" ]; then
+            python3 "$FORJAR_SCRIPT"
+        else
+            echo "Script de forja no encontrado."
+        fi
+        ;;
     estado)
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
         echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
@@ -240,5 +279,8 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  mordor terminal  -> Aplicar paleta de colores de Mordor a Ptyxis"
         echo "  mordor notif     -> Enviar notificación de prueba del Ojo de Sauron"
         echo "  mordor bloqueo   -> Configurar fondo y estilos de pantalla de bloqueo"
+        echo "  mordor prompt    -> Alternar prompt temático de Mordor en Bash"
+        echo "  mordor sonido    -> Alternar tema de sonido XDG para eventos de sistema"
+        echo "  mordor forjar    -> Animación interactiva de la Forja del Anillo Único"
         ;;
 esac

@@ -38,6 +38,18 @@ if [ -d "$AQUI/vscode" ]; then
     cp -r "$AQUI/vscode/"* "$HOME/.vscode/extensions/mordor-theme-1.0.0/" 2>/dev/null || true
 fi
 
+# Instalar tema oficial de sonido XDG Mordor
+if [ -d "$AQUI/gnome/sound-theme/mordor" ]; then
+    mkdir -p "$HOME/.local/share/sounds/mordor"
+    cp -r "$AQUI/gnome/sound-theme/mordor/"* "$HOME/.local/share/sounds/mordor/"
+    gsettings set org.gnome.desktop.sound theme-name 'mordor' 2>/dev/null || true
+    gsettings set org.gnome.desktop.sound event-sounds true 2>/dev/null || true
+fi
+
+# Instalar prompt temático para Bash
+mkdir -p "$HOME/.config/pixelzen"
+[ -f "$AQUI/src/mordor_prompt.sh" ] && cp "$AQUI/src/mordor_prompt.sh" "$HOME/.config/pixelzen/"
+
 # Generar fondo de pantalla de bloqueo si no existe
 if [ ! -f "$AQUI/fondos/mordor-bloqueo.png" ] && [ -f "$AQUI/src/construir_bloqueo.py" ]; then
     python3 "$AQUI/src/construir_bloqueo.py" >/dev/null 2>&1 || true
@@ -50,7 +62,7 @@ cp "$AQUI/mordor" "$HOME/.local/bin/mordor"
 chmod +x "$HOME/.local/bin/mordor"
 
 if [ -f "$HOME/.bashrc" ] && ! grep -q "complete -W .*mordor" "$HOME/.bashrc"; then
-    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo info" mordor' >> "$HOME/.bashrc"
+    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar info" mordor' >> "$HOME/.bashrc"
 fi
 
 # 4. Desplegar extensión para GNOME Shell

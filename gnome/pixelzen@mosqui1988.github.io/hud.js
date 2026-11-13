@@ -63,6 +63,7 @@ export class Hud {
         this.d = {cpu: 0, ram: {pct: 0, usado: 0, total: 0}, temp: 0, bat: null, net: {vpn: {}}, load: [0, 0, 0], up: 0, disco: 0, libre: 0, top: [], nuc: 0};
         this.s = {puertos: [], repos: [], tc: {}, tools: {}, fallos: 0, errores: 0, est: 0, vecinos: 0};
         this.cpuH = [];
+        this.ramH = [];
         this.rxH = [];
         this.citaIdx = Math.floor(Date.now() / 25000) % CITAS_MORDOR.length;
         this._ocupado = {};
@@ -271,6 +272,7 @@ export class Hud {
                     if (modo === 'rapido') {
                         this.d = r;
                         this.cpuH = this._push(this.cpuH, r.cpu ?? 0, 56);
+                        this.ramH = this._push(this.ramH, r.ram?.pct ?? 0, 56);
                         this.rxH = this._push(this.rxH, r.net?.rx ?? 0, 40);
                     } else {
                         this.s = r;
@@ -371,13 +373,19 @@ export class Hud {
 
     _spark(x, y, w, h, serie, cols, maxv, col) {
         const bw = Math.floor((w - cols) / cols);
+        const maxVal = Math.max(1, maxv);
         for (let i = 0; i < cols; i++) {
             const j = serie.length - cols + i;
             const v = j >= 0 && j < serie.length ? serie[j] : 0;
             const bx = x + i * (bw + 1);
             this._rect(bx, y + h - 1, bw, 1, PAL.line);
-            const bh = Math.max(2, Math.round(Math.min(1, v / maxv) * h));
-            this._rect(bx, y + h - bh, bw, bh, col, 0.40 + 0.60 * (i / cols));
+            const bh = Math.max(2, Math.round(Math.min(1, v / maxVal) * h));
+            const prog = bh / h;
+            const cBar = prog > 0.70 ? PAL.gold_light : (prog > 0.35 ? PAL.lava : col);
+            this._rect(bx, y + h - bh, bw, bh, cBar, 0.40 + 0.60 * (i / cols));
+            if (prog > 0.75) {
+                this._rect(bx, y + h - bh, bw, 1, '#ffffff', 0.85);
+            }
         }
     }
 
