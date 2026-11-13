@@ -201,8 +201,20 @@ case "${1:-info}" in
         fi
         ;;
     forjar)
-        FORJAR_SCRIPT="$(dirname "$0")/src/forjar.py"
-        if [ -f "$FORJAR_SCRIPT" ]; then
+        FORJAR_SCRIPT=""
+        for cand in \
+            "$HOME/.local/share/gnome-shell/extensions/$UUID/code/forjar.py" \
+            "$HOME/.local/share/pixelzen/src/forjar.py" \
+            "$(dirname "$0")/src/forjar.py" \
+            "$(dirname "$0")/../src/forjar.py" \
+            "$HOME/Descargas/pixelmordor/src/forjar.py" \
+            "$HOME/Descargas/mordor/src/forjar.py"; do
+            if [ -f "$cand" ]; then
+                FORJAR_SCRIPT="$cand"
+                break
+            fi
+        done
+        if [ -n "$FORJAR_SCRIPT" ]; then
             python3 "$FORJAR_SCRIPT"
         else
             echo "Script de forja no encontrado."

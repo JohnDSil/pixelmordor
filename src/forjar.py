@@ -162,12 +162,15 @@ def main():
         suena('anillo')
         time.sleep(0.5)
 
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, BrokenPipeError):
         pass
     finally:
-        # Restaurar cursor
-        sys.stdout.write("\033[?25h\n\033[1;32m¡El Anillo Único ha sido forjado en las llamas del Destino!\033[0m\n\n")
-        sys.stdout.flush()
+        try:
+            # Restaurar cursor
+            sys.stdout.write("\033[?25h\n\033[1;32m¡El Anillo Único ha sido forjado en las llamas del Destino!\033[0m\n\n")
+            sys.stdout.flush()
+        except Exception:
+            pass
 
 if __name__ == '__main__':
     main()
