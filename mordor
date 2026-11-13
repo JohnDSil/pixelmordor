@@ -452,6 +452,125 @@ else:
             fi
         fi
         ;;
+    fetch)
+        FETCH_PY=""
+        for cand in \
+            "$(dirname "$0")/src/mordor_fetch.py" \
+            "$(dirname "$0")/../src/mordor_fetch.py" \
+            "$HOME/.local/share/pixelzen/src/mordor_fetch.py" \
+            "$HOME/Descargas/pixelmordor/src/mordor_fetch.py" \
+            "$HOME/Descargas/mordor/src/mordor_fetch.py"; do
+            if [ -f "$cand" ]; then
+                FETCH_PY="$cand"
+                break
+            fi
+        done
+        if [ -n "$FETCH_PY" ]; then
+            python3 "$FETCH_PY"
+        else
+            echo -e "\033[1;31mError:\033[0m mordor_fetch.py no encontrado."
+        fi
+        ;;
+    iconos|carpetas)
+        sub="${2:-toggle}"
+        ICONS_SRC=""
+        for cand in \
+            "$(dirname "$0")/icons/Mordor" \
+            "$(dirname "$0")/../icons/Mordor" \
+            "$HOME/.local/share/pixelzen/icons/Mordor" \
+            "$HOME/.local/share/icons/Mordor" \
+            "$HOME/Descargas/pixelmordor/icons/Mordor" \
+            "$HOME/Descargas/mordor/icons/Mordor"; do
+            if [ -d "$cand" ]; then
+                ICONS_SRC="$cand"
+                break
+            fi
+        done
+        cur_ico=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | tr -d "'" || echo "Yaru")
+
+        if [ "$sub" = "off" ] || ([ "$sub" = "toggle" ] && [ "$cur_ico" = "Mordor" ]); then
+            gsettings reset org.gnome.desktop.interface icon-theme 2>/dev/null || true
+            echo -e "\033[1;30m🗂️ Tema de iconos de Mordor desactivado (restaurado tema estándar).\033[0m"
+        elif [ "$sub" = "estado" ]; then
+            echo -e "  • Tema de Iconos: \033[1;33m$cur_ico\033[0m"
+        else
+            if [ -z "$ICONS_SRC" ]; then
+                echo -e "\033[1;31mError:\033[0m Tema de iconos en icons/Mordor no encontrado."
+            else
+                mkdir -p "$HOME/.local/share/icons/Mordor"
+                cp -r "$ICONS_SRC/"* "$HOME/.local/share/icons/Mordor/"
+                gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Mordor" 2>/dev/null || true
+                gsettings set org.gnome.desktop.interface icon-theme 'Mordor' 2>/dev/null || true
+                suena anillo
+                echo -e "\033[1;32m🗂️ Tema de iconos de carpetas Mordor ACTIVADO en GNOME Files (Nautilus).\033[0m"
+                echo "   • Carpeta personal: Barad-dûr"
+                echo "   • Descargas: Minas Morgul"
+                echo "   • Documentos: Pergamino Tengwar"
+                echo "   • Música: El Anillo Único"
+                echo "   • Vídeos: Palantír"
+                echo "   • Papelera: Cráter de Orodruin"
+            fi
+        fi
+        ;;
+    nvim|vim)
+        sub="${2:-on}"
+        NVIM_SRC=""
+        for cand in \
+            "$(dirname "$0")/nvim" \
+            "$(dirname "$0")/../nvim" \
+            "$HOME/.local/share/pixelzen/nvim" \
+            "$HOME/Descargas/pixelmordor/nvim" \
+            "$HOME/Descargas/mordor/nvim"; do
+            if [ -d "$cand" ]; then
+                NVIM_SRC="$cand"
+                break
+            fi
+        done
+
+        if [ "$sub" = "off" ] || [ "$sub" = "desactivar" ]; then
+            rm -f "$HOME/.config/nvim/colors/mordor.vim" "$HOME/.vim/colors/mordor.vim"
+            rm -rf "$HOME/.config/nvim/lua/mordor"
+            echo -e "\033[1;30m⌨️ Tema Mordor para Neovim / Vim desactivado.\033[0m"
+        else
+            if [ -z "$NVIM_SRC" ]; then
+                echo -e "\033[1;31mError:\033[0m Directorio nvim no encontrado."
+            else
+                mkdir -p "$HOME/.config/nvim/colors" "$HOME/.config/nvim/lua/mordor" "$HOME/.vim/colors"
+                cp "$NVIM_SRC/colors/mordor.vim" "$HOME/.config/nvim/colors/" 2>/dev/null || true
+                cp "$NVIM_SRC/colors/mordor.vim" "$HOME/.vim/colors/" 2>/dev/null || true
+                cp "$NVIM_SRC/lua/mordor/init.lua" "$HOME/.config/nvim/lua/mordor/" 2>/dev/null || true
+                echo -e "\033[1;32m⌨️ Tema Mordor para Neovim / Vim instalado con éxito.\033[0m"
+                echo "   • Neovim / Vim: agrega 'colorscheme mordor' a tu init.lua o ~/.vimrc"
+            fi
+        fi
+        ;;
+    campana)
+        sub="${2:-toggle}"
+        STATE_FILE="$HOME/.config/pixelzen/campana_activa"
+        mkdir -p "$HOME/.config/pixelzen"
+
+        if [ "$sub" = "off" ] || ([ "$sub" = "toggle" ] && [ -f "$STATE_FILE" ]); then
+            rm -f "$STATE_FILE"
+            echo -e "\033[1;30m🔔 Sonido reactivo de comandos (campana de terminal) DESACTIVADO.\033[0m"
+        elif [ "$sub" = "estado" ]; then
+            if [ -f "$STATE_FILE" ]; then
+                echo -e "🔔 Campana de terminal: \033[1;32mACTIVA (Eco de Sauron en comandos fallidos)\033[0m"
+            else
+                echo -e "🔔 Campana de terminal: \033[1;30mINACTIVA\033[0m"
+            fi
+        elif [ "$sub" = "probar" ]; then
+            echo "Probando sonido de fallo..."
+            suena sauron
+            sleep 1
+            echo "Probando sonido de éxito..."
+            suena anillo
+        else
+            touch "$STATE_FILE"
+            suena anillo
+            echo -e "\033[1;32m🔔 Sonido reactivo de comandos (campana de terminal) ACTIVADO.\033[0m"
+            echo "   • Comandos fallidos (exit != 0) emitirán el eco subterráneo de Sauron."
+        fi
+        ;;
     estado)
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
         echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
@@ -489,6 +608,12 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         motd_st="Inactivo"
         grep -q "mordor_motd.sh" "$HOME/.bashrc" 2>/dev/null && motd_st="Activo (Citas al abrir terminal)"
         echo "  • Citas MOTD de Terminal: $motd_st"
+        ico_st="Estándar"
+        [ "$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | tr -d "'")" = "Mordor" ] && ico_st="Activo (Mordor / Nautilus)"
+        echo "  • Tema de Iconos Carpetas: $ico_st"
+        bell_st="Inactiva"
+        [ -f "$HOME/.config/pixelzen/campana_activa" ] && bell_st="Activa (Feedback acústico en comandos)"
+        echo "  • Campana Reactiva Terminal: $bell_st"
         echo "  • Carga CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2}')% usuario"
         echo "  • Memoria RAM: $(free -h | awk '/Mem:/ {print $3 " / " $2}')"
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
@@ -542,5 +667,9 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  mordor grub      -> Configurar tema de arranque GRUB 2 de Mordor [on|off]"
         echo "  mordor fondo     -> Aplicar fondo por resolución [1080p|2k|4k|ultrawide]"
         echo "  mordor motd      -> Alternar cita de Tolkien al abrir nueva terminal [on|off]"
+        echo "  mordor fetch     -> Presentación de telemetría y Barad-dûr en terminal"
+        echo "  mordor iconos    -> Activar tema de iconos temáticos en carpetas GNOME [on|off]"
+        echo "  mordor nvim      -> Instalar esquema de colores Mordor para Neovim / Vim"
+        echo "  mordor campana   -> Alternar feedback sonoro reactivo de comandos [on|off]"
         ;;
 esac

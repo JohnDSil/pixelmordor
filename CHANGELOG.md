@@ -5,7 +5,26 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 
 ---
 
-## [1.5.0] - 2026-11-13
+## [1.7.0] - 2026-11-13
+
+### Añadido
+- **👁️ Fastfetch / Neofetch Nativo de Mordor (`mordor fetch`):**
+  - Arte ASCII a todo color de la Torre Oscura de Barad-dûr y el Gran Ojo en `src/mordor_fetch.py`.
+  - Telemetría en terminología de la Tierra Media (Señor de la Torre, Reino Terrenal, Núcleo de Poder, Forjas de Orodruin, Bóvedas de Barad-dûr, Armería).
+  - Configuración y plantilla para Fastfetch en `fastfetch/mordor.jsonc`.
+- **🗂️ Tema de Iconos de Carpetas para GNOME Files / Nautilus (`mordor iconos [on|off]`):**
+  - Tema oficial en `icons/Mordor/` con herencia a Adwaita y Yaru.
+  - Emblemas forjados en pixel art: Carpeta personal (Barad-dûr), Descargas (Minas Morgul), Documentos (Pergamino Tengwar), Música (Anillo Único), Vídeos (Palantír) y Papelera (Cráter de Orodruin).
+- **⌨️ Tema de Colores para Neovim / Vim (`mordor nvim on`):**
+  - Implementaciones en Vimscript (`nvim/colors/mordor.vim`) y Lua (`nvim/lua/mordor/init.lua`).
+  - Paleta con fondo obsidiana (`#0d0308`), palabras clave en rojo magma (`#ef4444`) y cadenas en oro élfico (`#f59e0b`).
+- **🔔 Campana Reactiva de Terminal (`mordor campana [on|off]`):**
+  - Retroalimentación auditiva al ejecutar comandos en Bash.
+  - Alerta sónica automática con el eco subterráneo de Sauron ante cualquier error (`exit != 0`).
+
+---
+
+## [1.6.0] - 2026-11-13
 
 ### Añadido
 - **🚀 Tema de Arranque GRUB 2 (`mordor grub [on|off]`):**

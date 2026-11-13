@@ -56,6 +56,25 @@ if [ ! -f "$AQUI/fondos/mordor-bloqueo.png" ] && [ -f "$AQUI/src/construir_bloqu
     python3 "$AQUI/src/construir_bloqueo.py" >/dev/null 2>&1 || true
 fi
 
+# Copiar recursos adicionales a ~/.local/share/pixelzen
+mkdir -p "$DEST/src" "$DEST/icons" "$DEST/nvim"
+[ -d "$AQUI/src" ] && cp -r "$AQUI/src/"* "$DEST/src/" 2>/dev/null || true
+[ -d "$AQUI/icons" ] && cp -r "$AQUI/icons/"* "$DEST/icons/" 2>/dev/null || true
+[ -d "$AQUI/nvim" ] && cp -r "$AQUI/nvim/"* "$DEST/nvim/" 2>/dev/null || true
+
+# Instalar tema de iconos para GNOME Files
+if [ -d "$AQUI/icons/Mordor" ]; then
+    mkdir -p "$HOME/.local/share/icons/Mordor"
+    cp -r "$AQUI/icons/Mordor/"* "$HOME/.local/share/icons/Mordor/"
+    gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Mordor" 2>/dev/null || true
+fi
+
+# Instalar plantilla de Fastfetch
+if [ -d "$AQUI/fastfetch" ]; then
+    mkdir -p "$HOME/.config/fastfetch"
+    cp -n "$AQUI/fastfetch/"* "$HOME/.config/fastfetch/" 2>/dev/null || true
+fi
+
 # 3. Instalar herramienta de línea de comandos 'mordor'
 echo "==> 3/5 Instalando comando 'mordor' en ~/.local/bin..."
 mkdir -p "$HOME/.local/bin"
@@ -63,7 +82,7 @@ cp "$AQUI/mordor" "$HOME/.local/bin/mordor"
 chmod +x "$HOME/.local/bin/mordor"
 
 if [ -f "$HOME/.bashrc" ] && ! grep -q "complete -W .*mordor" "$HOME/.bashrc"; then
-    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar gtk atajos grub resolucion fondo motd info" mordor' >> "$HOME/.bashrc"
+    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar gtk atajos grub resolucion fondo motd fetch iconos nvim campana info" mordor' >> "$HOME/.bashrc"
 fi
 
 # 4. Desplegar extensión para GNOME Shell y temas GTK

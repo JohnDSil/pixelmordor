@@ -12,8 +12,20 @@ __mordor_git_branch() {
     fi
 }
 
+__mordor_play_sound() {
+    local snd="$1"
+    local f="$HOME/.local/share/gnome-shell/extensions/pixelzen@mosqui1988.github.io/sounds/${snd}.wav"
+    [ -f "$f" ] || f="$HOME/.local/share/pixelzen/sounds/${snd}.wav"
+    if [ -f "$f" ]; then
+        (canberra-gtk-play -f "$f" 2>/dev/null || pw-play "$f" 2>/dev/null || aplay -q "$f" 2>/dev/null || true) &
+    fi
+}
+
 __mordor_prompt_command() {
     local exit_code=$?
+    if [ -f "$HOME/.config/pixelzen/campana_activa" ] && [ $exit_code -ne 0 ]; then
+        __mordor_play_sound sauron
+    fi
     local arrow_col="\[\033[1;33m\]" # Dorado si exit == 0
     if [ $exit_code -ne 0 ]; then
         arrow_col="\[\033[1;31m\]"   # Rojo sangre si error

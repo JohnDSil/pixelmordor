@@ -797,6 +797,46 @@
         </p>
         <span class="badge-code">mordor motd [on|off]</span>
       </div>
+
+      <!-- Card 10: Fetch -->
+      <div class="card">
+        <span class="card-icon">👁</span>
+        <h3>Fastfetch Nativo de Barad-dûr</h3>
+        <p>
+          Presentador de telemetría y especificaciones de hardware con silueta ASCII de la Torre Oscura y métricas nombradas según la mitología de Tolkien.
+        </p>
+        <span class="badge-code">mordor fetch</span>
+      </div>
+
+      <!-- Card 11: Folder Icons -->
+      <div class="card">
+        <span class="card-icon">🗂️</span>
+        <h3>Tema de Iconos para Carpetas</h3>
+        <p>
+          Emblemas en pixel art para GNOME Files (Nautilus): Barad-dûr para Home, Minas Morgul para Descargas, Palantír para Vídeos y Cráter de Orodruin para la Papelera.
+        </p>
+        <span class="badge-code">mordor iconos [on|off]</span>
+      </div>
+
+      <!-- Card 12: Neovim / Vim -->
+      <div class="card">
+        <span class="card-icon">⌨️</span>
+        <h3>Tema para Neovim / Vim</h3>
+        <p>
+          Esquema de color para editores de código CLI en Vimscript y Lua con fondo obsidiana (#0d0308), palabras clave en rojo carmesí y cadenas en oro élfico.
+        </p>
+        <span class="badge-code">mordor nvim on</span>
+      </div>
+
+      <!-- Card 13: Terminal Bell -->
+      <div class="card">
+        <span class="card-icon">🔔</span>
+        <h3>Campana Reactiva de Terminal</h3>
+        <p>
+          Feedback acústico para comandos en Bash: tintineo del Anillo Único en operaciones exitosas y eco sísmico de Sauron cuando un comando falla.
+        </p>
+        <span class="badge-code">mordor campana [on|off]</span>
+      </div>
     </div>
   </section>
 
@@ -830,6 +870,9 @@
         <button class="cmd-chip" onclick="runSimCmd('mordor grub')">mordor grub</button>
         <button class="cmd-chip" onclick="runSimCmd('mordor motd')">mordor motd</button>
         <button class="cmd-chip" onclick="runSimCmd('mordor fondo 4k')">mordor fondo 4k</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor fetch')">mordor fetch</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor iconos on')">mordor iconos on</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor campana on')">mordor campana on</button>
       </div>
       <div class="terminal-body" id="term-output">
 <span class="term-accent">👁  TIERRA DE MORDOR</span> · <span class="term-gold">El Señor de los Anillos</span> <span style="color: #6b7280;">(escribe 'mordor info' o haz clic en los botones)</span>
@@ -1520,7 +1563,35 @@ Onda expansiva sísmica propagada por Barad-dûr.`,
    — El Gran Ojo de Barad-dûr
   ╚═════════════════════════════════════════════════════════════════════════╝`,
       'mordor fondo 4k': `🖼️ Fondo de pantalla adaptado a resolución [4k UHD: 3840x2160] aplicado con éxito.
-   Archivo: ~/.local/share/backgrounds/mordor.png`
+   Archivo: ~/.local/share/backgrounds/mordor.png`,
+      'mordor fetch': `
+            /\\          /\\              👑 Señor de la Torre:  2asird@PC213
+           /  \\        /  \\             ─────────────────────────────────────────────────
+          / /\\ \\      / /\\ \\            🏰 Reino Terrenal:     Ubuntu 26.04 LTS
+         / /  \\ \\    / /  \\ \\           🛡️  Núcleo de Poder:   Linux 7.0.0-generic
+        /_/    \\_\\  /_/    \\_\\          ⏳ Tiempo de Guardia:  5h 4m
+             \\   ||   /                 🌋 Forjas Orodruin:    Intel Core i5 (12 núcleos)
+              \\  ||  /                  🏛️  Bóvedas Barad-dûr: 8.9 GiB / 14.9 GiB (59%)
+           .---.-||-.---.               ⚔️  Armería de Mordor:  231.1 GiB / 456.3 GiB (50%)
+          /   (  👁  )   \\               🐚 Concha de Mando:    bash (ptyxis)
+         |   .-------.   |              💍 Inscripción Arcana:  Ash nazg durbatulûk...
+         |  /  SAURON \\  |              ─────────────────────────────────────────────────
+         | | TIERRA DE | |                ● ● ● ● ● ● ● ● ●
+         |  \\  MORDOR /  |              
+          \\  '-------'  /               
+           '---.---.---'                
+               | | |                    
+              /  |  \\                   
+             /___|___\\`,
+      'mordor iconos on': `🗂️ Tema de iconos de carpetas Mordor ACTIVADO en GNOME Files (Nautilus).
+   • Carpeta personal: Barad-dûr
+   • Descargas: Minas Morgul
+   • Documentos: Pergamino Tengwar
+   • Música: El Anillo Único
+   • Vídeos: Palantír
+   • Papelera: Cráter de Orodruin`,
+      'mordor campana on': `🔔 Sonido reactivo de comandos (campana de terminal) ACTIVADO.
+   • Comandos fallidos emitirán el eco subterráneo de Sauron.`
     };
 
     function runSimCmd(cmd) {

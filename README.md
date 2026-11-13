@@ -132,6 +132,10 @@ mordor atajos    # Activar o desactivar atajos globales GNOME [on|off]
 mordor grub      # Instalar o gestionar tema de arranque GRUB 2 [on|off]
 mordor fondo     # Aplicar fondos multi-resolución [1080p|2k|4k|ultrawide]
 mordor motd      # Alternar cita de Tolkien al abrir terminal [on|off]
+mordor fetch     # Presentación de telemetría y Barad-dûr en terminal
+mordor iconos    # Activar tema de iconos temáticos en carpetas GNOME [on|off]
+mordor nvim      # Instalar esquema de colores Mordor para Neovim / Vim
+mordor campana   # Alternar feedback sonoro reactivo de comandos [on|off]
 ```
 
 ---
@@ -186,6 +190,14 @@ mordor motd      # Alternar cita de Tolkien al abrir terminal [on|off]
     - Generación paramétrica y libre de deformaciones para 1080p, 1440p 2K QHD, 2160p 4K UHD y panorámicos 21:9 (3440x1440 y 2560x1080).
 15. **📜 Citas de Tolkien al Abrir Terminal MOTD (`mordor motd [on|off]`):**
     - Mensaje de bienvenida diario con 15 citas de El Señor de los Anillos en castellano y Lengua Negra de Mordor mostrado al instante (< 1ms).
+16. **👁️ Fastfetch / Neofetch Nativo de Mordor (`mordor fetch`):**
+    - Presentación en terminal con la silueta de Barad-dûr y el Ojo de Sauron en ASCII puro y métricas de CPU, RAM, disco y kernel en nomenclatura de la Tierra Media.
+17. **🗂️ Tema de Iconos de Carpetas para GNOME Files (`mordor iconos [on|off]`):**
+    - Conjunto oficial de iconos en pixel art en `icons/Mordor/` para las carpetas del sistema (Home, Descargas, Documentos, Música, Vídeos y Papelera de Orodruin).
+18. **⌨️ Esquema de Colores para Neovim / Vim (`mordor nvim on`):**
+    - Tema de sintaxis en `nvim/colors/mordor.vim` y `nvim/lua/mordor/init.lua` con fondo obsidiana, acentos carmesí y oro élfico.
+19. **🔔 Campana Reactiva de Terminal (`mordor campana [on|off]`):**
+    - Retroalimentación auditiva automática en Bash con el gong/eco subterráneo de Sauron ante cualquier comando fallido (`exit != 0`).
 
 ---
 
@@ -200,6 +212,9 @@ mordor motd      # Alternar cita de Tolkien al abrir terminal [on|off]
 | `capturas/` | Capturas y animaciones de muestra en las distintas fases del día. |
 | `fondos/` | Fondos de pantalla en alta resolución para cada iluminación. |
 | `fuentes/` | Tipografías pixel art: *Departure Mono*, *DotGothic16*, *Pixelify Sans*, *VT323*. |
+| `fastfetch/` | Configuración y arte ASCII de Barad-dûr para Fastfetch. |
+| `icons/` | Tema de iconos FreeDesktop para carpetas y lugares en GNOME Nautilus. |
+| `nvim/` | Esquema de colores Mordor para Neovim (`lua`) y Vim (`.vim`). |
 | `src/` | Generadores en Python de capas HD, iconos, wallpapers y cursores. |
 | `hud/` | Widgets y componentes compatibles para KDE Plasma. |
 | `fondo-animado/` | Plugin de fondo animado para KDE Plasma. |
