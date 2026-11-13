@@ -220,6 +220,111 @@ case "${1:-info}" in
             echo "Script de forja no encontrado."
         fi
         ;;
+    gtk)
+        sub="${2:-on}"
+        GTK_SRC=""
+        for cand in \
+            "$HOME/.local/share/gnome-shell/extensions/$UUID/gtk/mordor-gtk.css" \
+            "$HOME/.local/share/pixelzen/gtk/mordor-gtk.css" \
+            "$(dirname "$0")/gnome/gtk/mordor-gtk.css" \
+            "$(dirname "$0")/../gnome/gtk/mordor-gtk.css" \
+            "$HOME/Descargas/pixelmordor/gnome/gtk/mordor-gtk.css" \
+            "$HOME/Descargas/mordor/gnome/gtk/mordor-gtk.css"; do
+            if [ -f "$cand" ]; then
+                GTK_SRC="$cand"
+                break
+            fi
+        done
+
+        if [ "$sub" = "off" ] || [ "$sub" = "desactivar" ]; then
+            rm -f "$HOME/.config/gtk-4.0/gtk.css" "$HOME/.config/gtk-3.0/gtk.css"
+            [ -f "$HOME/.config/gtk-4.0/gtk.css.bak" ] && mv "$HOME/.config/gtk-4.0/gtk.css.bak" "$HOME/.config/gtk-4.0/gtk.css"
+            [ -f "$HOME/.config/gtk-3.0/gtk.css.bak" ] && mv "$HOME/.config/gtk-3.0/gtk.css.bak" "$HOME/.config/gtk-3.0/gtk.css"
+            gsettings set org.gnome.desktop.interface color-scheme 'default' 2>/dev/null || true
+            gsettings reset org.gnome.desktop.interface gtk-theme 2>/dev/null || true
+            gsettings reset org.gnome.desktop.interface accent-color 2>/dev/null || true
+            echo -e "\033[1;30m🎨 Tema GTK/Libadwaita de Mordor desactivado (restaurado tema estándar).\033[0m"
+        elif [ "$sub" = "estado" ]; then
+            if [ -f "$HOME/.config/gtk-4.0/gtk.css" ] && grep -q "PixelMordor" "$HOME/.config/gtk-4.0/gtk.css" 2>/dev/null; then
+                echo -e "\033[1;32m🎨 Tema GTK/Libadwaita de Mordor está ACTIVO (~/.config/gtk-4.0/gtk.css)\033[0m"
+            else
+                echo -e "\033[1;30m🎨 Tema GTK/Libadwaita de Mordor está INACTIVO\033[0m"
+            fi
+        else
+            if [ -z "$GTK_SRC" ]; then
+                echo -e "\033[1;31mError:\033[0m Archivo mordor-gtk.css no encontrado."
+            else
+                mkdir -p "$HOME/.config/gtk-4.0" "$HOME/.config/gtk-3.0"
+                if [ -f "$HOME/.config/gtk-4.0/gtk.css" ] && ! grep -q "PixelMordor" "$HOME/.config/gtk-4.0/gtk.css" 2>/dev/null; then
+                    cp "$HOME/.config/gtk-4.0/gtk.css" "$HOME/.config/gtk-4.0/gtk.css.bak"
+                fi
+                if [ -f "$HOME/.config/gtk-3.0/gtk.css" ] && ! grep -q "PixelMordor" "$HOME/.config/gtk-3.0/gtk.css" 2>/dev/null; then
+                    cp "$HOME/.config/gtk-3.0/gtk.css" "$HOME/.config/gtk-3.0/gtk.css.bak"
+                fi
+                cp "$GTK_SRC" "$HOME/.config/gtk-4.0/gtk.css"
+                cp "$GTK_SRC" "$HOME/.config/gtk-3.0/gtk.css"
+                gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
+                gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark' 2>/dev/null || true
+                gsettings set org.gnome.desktop.interface accent-color 'red' 2>/dev/null || true
+                suena anillo
+                echo -e "\033[1;31m🎨 Tema GTK4/Libadwaita y GTK3 de Mordor activado con éxito.\033[0m"
+                echo -e "   • Ventanas obsidiana (#0d0308) con acentos volcánicos carmesí (#ef4444)"
+                echo -e "   • Scrollbars con aspecto de magma y botones sugeridos en gradiente ardiente"
+                echo -e "   • Compatible con todas las aplicaciones GNOME (Archivos, Ptyxis, Ajustes, etc.)"
+            fi
+        fi
+        ;;
+    atajos|keys)
+        sub="${2:-on}"
+        python3 -c "
+import sys
+from gi.repository import Gio
+
+mordor_keys = [
+    ('mordor-erupcion', 'Mordor: Erupción del Monte del Destino', 'mordor erupcion', '<Super><Alt>e'),
+    ('mordor-colera', 'Mordor: Cólera del Ojo de Sauron', 'mordor colera', '<Super><Alt>s'),
+    ('mordor-nazgul', 'Mordor: Ataque del Nazgûl', 'mordor nazgul', '<Super><Alt>n'),
+    ('mordor-bloqueo', 'Mordor: Bloqueo de Pantalla (El Morannon)', 'mordor bloqueo lock', '<Super><Alt>b'),
+    ('mordor-forjar', 'Mordor: Forja del Anillo Único', 'ptyxis --new-window -- mordor forjar', '<Super><Alt>f'),
+]
+
+settings = Gio.Settings(schema='org.gnome.settings-daemon.plugins.media-keys')
+current = list(settings.get_strv('custom-keybindings'))
+sub = '$sub'
+
+if sub in ('off', 'desactivar', 'clear'):
+    updated = [p for p in current if '/mordor-' not in p]
+    settings.set_strv('custom-keybindings', updated)
+    print('\033[1;30m⌨️ Atajos de teclado globales de Mordor desactivados.\033[0m')
+elif sub in ('estado', 'status', 'listar'):
+    mordor_active = [p for p in current if '/mordor-' in p]
+    if mordor_active:
+        print('\033[1;32m⌨️ Atajos de teclado globales de Mordor ACTIVOS:\033[0m')
+        for key_id, name, cmd, bind in mordor_keys:
+            path = f'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{key_id}/'
+            if path in mordor_active:
+                s = Gio.Settings(schema='org.gnome.settings-daemon.plugins.media-keys.custom-keybinding', path=path)
+                print(f'   • \033[1;33m{s.get_string(\"binding\")}\033[0m -> {name} (\033[1;31m{s.get_string(\"command\")}\033[0m)')
+    else:
+        print('\033[1;30m⌨️ Atajos de teclado globales de Mordor INACTIVOS\033[0m')
+else:
+    paths = [f'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{k[0]}/' for k in mordor_keys]
+    for key_id, name, cmd, bind in mordor_keys:
+        path = f'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/{key_id}/'
+        s = Gio.Settings(schema='org.gnome.settings-daemon.plugins.media-keys.custom-keybinding', path=path)
+        s.set_string('name', name)
+        s.set_string('command', cmd)
+        s.set_string('binding', bind)
+    updated = [p for p in current if '/mordor-' not in p] + paths
+    settings.set_strv('custom-keybindings', updated)
+    print('\033[1;31m⌨️ Atajos de teclado globales de GNOME activados para Mordor:\033[0m')
+    print('   • \033[1;33mSuper + Alt + E\033[0m -> Super-erupción en el Orodruin')
+    print('   • \033[1;33mSuper + Alt + S\033[0m -> Cólera del Ojo de Sauron')
+    print('   • \033[1;33mSuper + Alt + N\033[0m -> Chillido y ataque en picado del Nazgûl')
+    print('   • \033[1;33mSuper + Alt + B\033[0m -> Bloquear pantalla en El Morannon')
+    print('   • \033[1;33mSuper + Alt + F\033[0m -> Forja interactiva del Anillo Único (Ptyxis)')
+"
+        ;;
     estado)
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
         echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
@@ -246,6 +351,11 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  • Extensión GNOME: $(gnome-extensions info $UUID 2>/dev/null | grep Estado || echo 'Activa')"
         echo "  • Cursor: $(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null)"
         echo "  • Acento UI: $(gsettings get org.gnome.desktop.interface accent-color 2>/dev/null)"
+        gtk_st="Inactivo"
+        [ -f "$HOME/.config/gtk-4.0/gtk.css" ] && grep -q "PixelMordor" "$HOME/.config/gtk-4.0/gtk.css" 2>/dev/null && gtk_st="Activo (Libadwaita / GTK4)"
+        echo "  • Tema GTK/Libadwaita: $gtk_st"
+        keys_count=$(python3 -c "from gi.repository import Gio; s=Gio.Settings(schema='org.gnome.settings-daemon.plugins.media-keys'); print(len([p for p in s.get_strv('custom-keybindings') if '/mordor-' in p]))" 2>/dev/null || echo 0)
+        echo "  • Atajos Globales: $keys_count configurados (Super+Alt+{E,S,N,B,F})"
         echo "  • Carga CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2}')% usuario"
         echo "  • Memoria RAM: $(free -h | awk '/Mem:/ {print $3 " / " $2}')"
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
@@ -294,5 +404,7 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  mordor prompt    -> Alternar prompt temático de Mordor en Bash"
         echo "  mordor sonido    -> Alternar tema de sonido XDG para eventos de sistema"
         echo "  mordor forjar    -> Animación interactiva de la Forja del Anillo Único"
+        echo "  mordor gtk       -> Activar/desactivar tema GTK4/Libadwaita y GTK3 [on|off]"
+        echo "  mordor atajos    -> Activar/desactivar atajos de teclado globales GNOME [on|off]"
         ;;
 esac

@@ -1,0 +1,108 @@
+/* ====================================================================
+   PixelMordor - Tema GTK 3 & GTK 4 / Libadwaita
+   La Tierra Oscura de Sauron (El Señor de los Anillos)
+   ==================================================================== */
+
+/* Paleta oficial de colores de Libadwaita */
+@define-color accent_color #ef4444;
+@define-color accent_bg_color #dc2626;
+@define-color accent_fg_color #ffffff;
+
+@define-color destructive_color #b91c1c;
+@define-color destructive_bg_color #991b1b;
+@define-color destructive_fg_color #ffffff;
+
+@define-color success_color #f59e0b;
+@define-color success_bg_color #d97706;
+@define-color success_fg_color #000000;
+
+@define-color warning_color #f97316;
+@define-color warning_bg_color #ea580c;
+@define-color warning_fg_color #000000;
+
+@define-color error_color #ef4444;
+@define-color error_bg_color #dc2626;
+@define-color error_fg_color #ffffff;
+
+@define-color window_bg_color #0d0308;
+@define-color window_fg_color #e6dedc;
+
+@define-color view_bg_color #12050b;
+@define-color view_fg_color #e6dedc;
+
+@define-color headerbar_bg_color #17070f;
+@define-color headerbar_fg_color #e6dedc;
+@define-color headerbar_border_color #782622;
+@define-color headerbar_backdrop_color #0d0308;
+
+@define-color card_bg_color #17070f;
+@define-color card_fg_color #e6dedc;
+@define-color card_border_color #782622;
+
+@define-color popover_bg_color #14050d;
+@define-color popover_fg_color #e6dedc;
+
+@define-color dialog_bg_color #14050d;
+@define-color dialog_fg_color #e6dedc;
+
+/* Scrollbars con brillo de lava volcánica */
+scrollbar trough {
+    background-color: rgba(22, 8, 14, 0.6);
+}
+
+scrollbar slider {
+    background-color: #7f1d1d;
+    border-radius: 6px;
+    border: 1px solid #dc2626;
+    min-width: 8px;
+    min-height: 8px;
+}
+
+scrollbar slider:hover {
+    background-color: #ea580c;
+    box-shadow: 0 0 8px rgba(234, 88, 12, 0.7);
+}
+
+/* Selección de texto y elementos */
+selection, textview text selection {
+    background-color: #b91c1c;
+    color: #fef08a;
+}
+
+/* Botones principales de acción */
+button.suggested-action {
+    background: linear-gradient(to bottom, #dc2626, #991b1b);
+    border: 1px solid #f59e0b;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+button.suggested-action:hover {
+    background: linear-gradient(to bottom, #ef4444, #b91c1c);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+}
+
+/* Barras de progreso con aspecto de magma */
+progressbar progress {
+    background: linear-gradient(to right, #dc2626, #f97316);
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+}
+
+progressbar trough {
+    background-color: #1a080f;
+    border: 1px solid #782622;
+    border-radius: 4px;
+}
+
+/* Campos de entrada de texto */
+entry {
+    background-color: #12050b;
+    border: 1px solid #782622;
+    color: #fef08a;
+}
+
+entry:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}

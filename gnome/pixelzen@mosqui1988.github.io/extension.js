@@ -247,6 +247,30 @@ export default class PixelZenExtension extends Extension {
             });
             menu.addMenuItem(itemPaleta);
 
+            const itemGTK = new PopupMenu.PopupMenuItem('🎨 Tema GTK4/Libadwaita de Mordor');
+            itemGTK.connect('activate', () => {
+                try {
+                    Gio.Subprocess.new(['/bin/bash', '-c', 'mordor gtk on'], Gio.SubprocessFlags.NONE);
+                } catch (e) {}
+            });
+            menu.addMenuItem(itemGTK);
+
+            const itemAtajos = new PopupMenu.PopupMenuItem('⌨️ Configurar Atajos Globales GNOME');
+            itemAtajos.connect('activate', () => {
+                try {
+                    Gio.Subprocess.new(['/bin/bash', '-c', 'mordor atajos on'], Gio.SubprocessFlags.NONE);
+                } catch (e) {}
+            });
+            menu.addMenuItem(itemAtajos);
+
+            const itemForja = new PopupMenu.PopupMenuItem('💍 Forjar el Anillo Único (Terminal)');
+            itemForja.connect('activate', () => {
+                try {
+                    Gio.Subprocess.new(['ptyxis', '--new-window', '--', 'mordor', 'forjar'], Gio.SubprocessFlags.NONE);
+                } catch (e) {}
+            });
+            menu.addMenuItem(itemForja);
+
             const itemBloqueo = new PopupMenu.PopupMenuItem('🔒 Bloquear Pantalla (El Morannon)');
             itemBloqueo.connect('activate', () => {
                 try {

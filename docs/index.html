@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelMordor · La Tierra de las Sombras | GNOME Shell Theme</title>
+  <meta name="description" content="Tema interactivo para GNOME Shell, Libadwaita/GTK4 y Ptyxis inspirado en Mordor y El Señor de los Anillos en pixel art.">
+  <meta name="theme-color" content="#dc2626">
+
+  <style>
+    :root {
+      --bg-dark: #070205;
+      --bg-card: #12050d;
+      --bg-card-hover: #1b0713;
+      --border-mordor: #782622;
+      --accent-red: #ef4444;
+      --accent-dark-red: #dc2626;
+      --accent-blood: #991b1b;
+      --accent-orange: #f97316;
+      --accent-gold: #f59e0b;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0308;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #7f1d1d;
+      border-radius: 5px;
+      border: 1px solid #dc2626;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ea580c;
+      box-shadow: 0 0 10px rgba(234, 88, 12, 0.8);
+    }
+
+    /* Header Nav */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(13, 3, 8, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-mordor);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-eye {
+      font-size: 1.6rem;
+      animation: pulseEye 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseEye {
+      0%, 100% { filter: drop-shadow(0 0 4px #ef4444); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 14px #f97316); transform: scale(1.1); }
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent-red);
+    }
+
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #1f0814;
+      border: 1px solid var(--border-mordor);
+      color: #fff;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-github:hover {
+      background: #7f1d1d;
+      border-color: var(--accent-red);
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 3rem 1.5rem;
+      background: radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.15) 0%, rgba(7, 2, 5, 0.95) 75%);
+      overflow: hidden;
+    }
+
+    /* Canvas Container */
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      height: 480px;
+      margin: 1.5rem auto 1rem auto;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 2px solid var(--border-mordor);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(220, 38, 38, 0.25);
+      background: #000;
+    }
+
+    #mordor-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+
+    /* Canvas Controls Toolbar */
+    .canvas-toolbar {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: rgba(13, 3, 8, 0.82);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(220, 38, 38, 0.4);
+      z-index: 10;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-tool {
+      background: #1e0914;
+      border: 1px solid #782622;
+      color: #e5e7eb;
+      padding: 0.35rem 0.75rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+
+    .btn-tool:hover {
+      background: #991b1b;
+      border-color: #ef4444;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-tool.active {
+      background: #dc2626;
+      border-color: #f59e0b;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+    }
+
+    .badge-ring {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: #f59e0b;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #fff 0%, #fca5a5 40%, #ef4444 80%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-lead {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: #d1d5db;
+      max-width: 760px;
+      margin: 0 auto 1.5rem auto;
+    }
+
+    /* 1-Click Install Box */
+    .install-box {
+      width: 100%;
+      max-width: 720px;
+      margin: 1.5rem auto 0 auto;
+      background: #11040a;
+      border: 1px solid var(--border-mordor);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .install-command {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: #fef08a;
+      overflow-x: auto;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    .install-command span.prefix {
+      color: #ef4444;
+      user-select: none;
+    }
+
+    .btn-copy {
+      background: #dc2626;
+      border: 1px solid #f97316;
+      color: #fff;
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .btn-copy:hover {
+      background: #ef4444;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.7);
+    }
+
+    /* Features Grid */
+    .section-title {
+      text-align: center;
+      margin: 5rem auto 1rem auto;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+    }
+
+    .grid-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-mordor);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: all 0.25s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-red);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .badge-code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: #1e0914;
+      border: 1px solid #782622;
+      color: #fca5a5;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Terminal Simulator */
+    .terminal-section {
+      max-width: 960px;
+      margin: 5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .terminal-window {
+      background: #0d0308;
+      border: 1px solid var(--border-mordor);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(220, 38, 38, 0.2);
+    }
+
+    .terminal-header {
+      background: #17070f;
+      border-bottom: 1px solid var(--border-mordor);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .terminal-chips {
+      padding: 0.6rem 1rem;
+      background: #12040b;
+      border-bottom: 1px solid #3b1116;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .chip-label {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-right: 0.2rem;
+    }
+
+    .cmd-chip {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: #230816;
+      border: 1px solid #782622;
+      color: #fca5a5;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .cmd-chip:hover {
+      background: #dc2626;
+      color: #fff;
+      border-color: #f59e0b;
+    }
+
+    .terminal-body {
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #e6dedc;
+      min-height: 320px;
+      max-height: 480px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .term-prompt {
+      color: #ef4444;
+      font-weight: 700;
+    }
+    .term-path {
+      color: #f97316;
+    }
+    .term-git {
+      color: #f59e0b;
+    }
+    .term-arrow {
+      color: #ea580c;
+    }
+    .term-accent {
+      color: #ef4444;
+      font-weight: bold;
+    }
+    .term-gold {
+      color: #f59e0b;
+    }
+    .term-cyan {
+      color: #38bdf8;
+    }
+
+    .terminal-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .terminal-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fef08a;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      flex-grow: 1;
+    }
+
+    /* Keybindings Showcase */
+    .keys-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .keys-table th, .keys-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #2d0b13;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .keys-table th {
+      color: #9ca3af;
+      font-weight: 600;
+    }
+
+    .kbd-key {
+      background: #260918;
+      border: 1px solid #782622;
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #fef08a;
+      box-shadow: 0 2px 0 #52161b;
+    }
+
+    /* Screenshots Gallery */
+    .gallery-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-mordor);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .gallery-item:hover {
+      border-color: var(--accent-red);
+      transform: scale(1.02);
+      box-shadow: 0 10px 30px rgba(220, 38, 38, 0.25);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    .gallery-info {
+      padding: 1rem;
+    }
+
+    .gallery-info h4 {
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .gallery-info p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 6rem;
+      padding: 3rem 1.5rem;
+      background: #0a0207;
+      border-top: 1px solid var(--border-mordor);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--accent-red);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-quote {
+      font-style: italic;
+      color: #fca5a5;
+      margin-bottom: 1rem;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 0 1rem; }
+      nav a { display: none; }
+      .canvas-container { height: 360px; }
+      .install-box { flex-direction: column; align-items: stretch; }
+      .btn-copy { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <a href="#" class="brand">
+      <span class="brand-eye">👁</span>
+      <span>PixelMordor</span>
+    </a>
+    <nav>
+      <a href="#caracteristicas">Características</a>
+      <a href="#terminal">Terminal</a>
+      <a href="#atajos">Atajos</a>
+      <a href="#capturas">Galería</a>
+      <a href="https://github.com/JohnDSil/pixelmordor" target="_blank" rel="noopener" class="btn-github">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <span class="badge-ring">💍 Un Anillo para gobernarlos a todos</span>
+    <h1>La Tierra de Mordor</h1>
+    <p class="hero-lead">
+      Tema integral de escritorio para GNOME Shell 45/46/47, Libadwaita/GTK4 y Ptyxis.
+      Pixel art animado con ciclo solar real, erupciones en vivo y el Ojo de Sauron vigilando tu cursor.
+    </p>
+
+    <!-- Interactive Canvas Display -->
+    <div class="canvas-container">
+      <canvas id="mordor-canvas"></canvas>
+      <div class="canvas-toolbar">
+        <div class="toolbar-group">
+          <button class="btn-tool active" id="btn-noche" onclick="setFase('noche')">🌑 Sombras</button>
+          <button class="btn-tool" id="btn-sangre" onclick="setFase('sangre')">🌅 Hora de Sangre</button>
+          <button class="btn-tool" id="btn-dia" onclick="setFase('dia')">☀️ Ceniza Diurna</button>
+        </div>
+        <div class="toolbar-group">
+          <button class="btn-tool" onclick="triggerErupcion()">🌋 Erupción</button>
+          <button class="btn-tool" onclick="triggerColera()">👁 Cólera</button>
+          <button class="btn-tool" onclick="triggerNazgul()">🦅 Nazgûl</button>
+          <button class="btn-tool" onclick="triggerAnillo()">💍 El Anillo</button>
+          <button class="btn-tool" id="btn-audio" onclick="toggleAudio()">🔊 Sonido: ON</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1-Click Install Command -->
+    <div class="install-box">
+      <div class="install-command">
+        <span class="prefix">❯ </span>curl -fsSL https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/instalar.sh | bash
+      </div>
+      <button class="btn-copy" onclick="copyInstall()">
+        <span id="copy-icon">📋</span>
+        <span id="copy-text">Copiar</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas">
+    <h2 class="section-title">Armamento Completo del Reino Oscuro</h2>
+    <p class="section-subtitle">
+      Una transformación visual y auditiva total para tu sistema Linux.
+    </p>
+
+    <div class="grid-container">
+      <!-- Card 1 -->
+      <div class="card">
+        <span class="card-icon">🌋</span>
+        <h3>Ciclo Solar NOAA Astronómico</h3>
+        <p>
+          Calcula la declinación y elevación solar exacta en tiempo real para Madrid (40.4°N). Los cielos y la iluminación cambian gradualmente entre Ceniza Diurna, Hora de Sangre y Noche de Sombras.
+        </p>
+        <span class="badge-code">mordor auto | mordor dia | mordor sangre</span>
+      </div>
+
+      <!-- Card 2: GTK Theme -->
+      <div class="card">
+        <span class="card-icon">🎨</span>
+        <h3>Tema GTK4 / Libadwaita & GTK3</h3>
+        <p>
+          Estilo obsidian (#0d0308) para todas tus ventanas y aplicaciones nativas de GNOME (Archivos, Ajustes, Calculadora). Barras de scroll con resplandor de lava y botones volcánicos.
+        </p>
+        <span class="badge-code">mordor gtk on | off</span>
+      </div>
+
+      <!-- Card 3: Global Shortcuts -->
+      <div class="card">
+        <span class="card-icon">⌨️</span>
+        <h3>5 Atajos Globales GNOME</h3>
+        <p>
+          Desata la furia de Mordor al instante con combinaciones directas del sistema: erupciones, cólera, chillido Nazgûl, bloqueo en Morannon y forja del Anillo.
+        </p>
+        <span class="badge-code">Super + Alt + {E, S, N, B, F}</span>
+      </div>
+
+      <!-- Card 4: Terminal Ptyxis -->
+      <div class="card">
+        <span class="card-icon">🖥️</span>
+        <h3>Terminal Ptyxis 16 Colores & Prompt</h3>
+        <p>
+          Paleta RGB oficial con negros ceniza, rojos magma y oros ardientes. Incluye prompt interactivo en Bash con el Ojo de Sauron, estado Git y el Anillo Único.
+        </p>
+        <span class="badge-code">mordor terminal | mordor prompt</span>
+      </div>
+
+      <!-- Card 5: FreeDesktop Sound Theme -->
+      <div class="card">
+        <span class="card-icon">🔊</span>
+        <h3>Tema Oficial de Sonido XDG</h3>
+        <p>
+          Eventos acústicos integrados en el sistema: alertas de diálogo, conexión de dispositivos USB, vaciado de papelera y campana de terminal con eco de Barad-dûr.
+        </p>
+        <span class="badge-code">mordor sonido [on|off]</span>
+      </div>
+
+      <!-- Card 6: Lock Screen -->
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <h3>Pantalla de Bloqueo El Morannon</h3>
+        <p>
+          Arte pixel art panorámico de las Puertas Negras de Mordor bajo la mirada incansable de la pupila de fuego. Tu sesión custodiada por las legiones de Sauron.
+        </p>
+        <span class="badge-code">mordor bloqueo lock</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Terminal Section -->
+  <section id="terminal" class="terminal-section">
+    <h2 class="section-title">Terminal Interactiva Ptyxis</h2>
+    <p class="section-subtitle">
+      Prueba los comandos de línea de comandos del tema en este simulador en vivo.
+    </p>
+
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+        </div>
+        <div class="terminal-title">2asird@PC213: ~/Descargas/pixelmordor (ptyxis)</div>
+        <div></div>
+      </div>
+      <div class="terminal-chips">
+        <span class="chip-label">Comandos rápidos:</span>
+        <button class="cmd-chip" onclick="runSimCmd('mordor estado')">mordor estado</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor erupcion')">mordor erupcion</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor colera')">mordor colera</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor nazgul')">mordor nazgul</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor cita')">mordor cita</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor atajos')">mordor atajos</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor gtk on')">mordor gtk on</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor forjar')">mordor forjar</button>
+      </div>
+      <div class="terminal-body" id="term-output">
+<span class="term-accent">👁  TIERRA DE MORDOR</span> · <span class="term-gold">El Señor de los Anillos</span> <span style="color: #6b7280;">(escribe 'mordor info' o haz clic en los botones)</span>
+<span class="term-prompt">👁[2asird@PC213:~/pixelmordor]</span> <span class="term-git">(main 💍)</span> <span class="term-arrow">❯</span> mordor info
+<span class="term-accent">El Señor de los Anillos: Tema Mordor PixelZen</span>
+Comandos disponibles:
+  <span class="term-gold">mordor estado</span>    -> Reporte del estado del reino y elevación solar
+  <span class="term-gold">mordor auto</span>      -> Sincronizar en tiempo real con el sol (NOAA)
+  <span class="term-gold">mordor erupcion</span>  -> Desatar super-erupción en Orodruin
+  <span class="term-gold">mordor colera</span>    -> Desatar cólera del Ojo de Sauron
+  <span class="term-gold">mordor nazgul</span>    -> Desatar chillido y ataque en picado del Nazgûl
+  <span class="term-gold">mordor forjar</span>    -> Animación interactiva de la Forja del Anillo
+  <span class="term-gold">mordor gtk</span>       -> Activar/desactivar tema GTK4/Libadwaita y GTK3
+  <span class="term-gold">mordor atajos</span>    -> Activar atajos de teclado globales GNOME
+      </div>
+      <div style="padding: 0.5rem 1.25rem 1.25rem 1.25rem;">
+        <div class="terminal-input-row">
+          <span class="term-prompt">👁[2asird@PC213:~/pixelmordor]</span> <span class="term-git">(main 💍)</span> <span class="term-arrow">❯</span>
+          <input type="text" id="term-cli" class="terminal-input" placeholder="Escribe un comando (ej: mordor estado)..." onkeydown="handleTermKey(event)">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Atajos de Teclado -->
+  <section id="atajos" style="max-width: 960px; margin: 4rem auto; padding: 0 1.5rem;">
+    <h2 class="section-title">Atajos de Teclado Globales GNOME</h2>
+    <p class="section-subtitle">
+      Control directo del escritorio con combinaciones nativas de Media Keys.
+    </p>
+
+    <div class="card">
+      <table class="keys-table">
+        <thead>
+          <tr>
+            <th>Combinación</th>
+            <th>Acción</th>
+            <th>Comando Ejecutado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="kbd-key">Super</span> + <span class="kbd-key">Alt</span> + <span class="kbd-key">E</span></td>
+            <td><strong>Super-Erupción</strong> en el Monte del Destino (Orodruin)</td>
+            <td><code>mordor erupcion</code></td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">Super</span> + <span class="kbd-key">Alt</span> + <span class="kbd-key">S</span></td>
+            <td><strong>Cólera del Gran Ojo</strong> (Onda expansiva ígnea)</td>
+            <td><code>mordor colera</code></td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">Super</span> + <span class="kbd-key">Alt</span> + <span class="kbd-key">N</span></td>
+            <td><strong>Chillido y Picado</strong> de combate del Nazgûl</td>
+            <td><code>mordor nazgul</code></td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">Super</span> + <span class="kbd-key">Alt</span> + <span class="kbd-key">B</span></td>
+            <td><strong>Bloquear Pantalla</strong> (El Morannon / Puertas Negras)</td>
+            <td><code>mordor bloqueo lock</code></td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">Super</span> + <span class="kbd-key">Alt</span> + <span class="kbd-key">F</span></td>
+            <td><strong>Forja 3D interactiva</strong> del Anillo Único en Ptyxis</td>
+            <td><code>ptyxis -- mordor forjar</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Screenshots Gallery -->
+  <section id="capturas" style="margin: 5rem 0;">
+    <h2 class="section-title">Galería de Capturas en GNOME 46</h2>
+    <p class="section-subtitle">
+      Vistas de alta fidelidad tomadas directamente desde el entorno real.
+    </p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="capturas/mordor-preview.png" alt="Mordor Escritorio Completo" onerror="this.src='https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/capturas/mordor-preview.png'">
+        <div class="gallery-info">
+          <h4>Escritorio Principal de Mordor</h4>
+          <p>Barad-dûr, Orodruin en erupción y panel HUD con monitoreo de CPU/RAM y citas del Anillo.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="capturas/mordor-terminal.png" alt="Terminal Ptyxis Mordor" onerror="this.src='https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/capturas/mordor-terminal.png'">
+        <div class="gallery-info">
+          <h4>Terminal Ptyxis & Prompt Bash</h4>
+          <p>Paleta Mordor.palette de 16 colores con prompt interactivo de Sauron y rama Git.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="capturas/mordor-bloqueo.png" alt="Pantalla de Bloqueo El Morannon" onerror="this.src='https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/capturas/mordor-bloqueo.png'">
+        <div class="gallery-info">
+          <h4>Pantalla de Bloqueo: El Morannon</h4>
+          <p>Las imponentes Puertas Negras de Mordor bajo la guardia del Gran Ojo.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="capturas/mordor-noche.png" alt="Modo Noche de Sombras" onerror="this.src='https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/capturas/mordor-noche.png'">
+        <div class="gallery-info">
+          <h4>Modo Noche (Sombras Profundas)</h4>
+          <p>Iluminación nocturna con el resplandor de la pupila de Sauron atravesando la oscuridad.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="capturas/mordor-dorado.png" alt="Hora de Sangre Crepúsculo" onerror="this.src='https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/capturas/mordor-dorado.png'">
+        <div class="gallery-info">
+          <h4>Hora de Sangre (Crepúsculo Carmesí)</h4>
+          <p>Transición al atardecer cuando el sol se oculta tras las Ephel Dúath.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="capturas/mordor-dia.png" alt="Modo Ceniza Diurna" onerror="this.src='https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/capturas/mordor-dia.png'">
+        <div class="gallery-info">
+          <h4>Ceniza Diurna (Cénit Solar)</h4>
+          <p>Cielos densos de ceniza volcánica bajo la luz filtrada del mediodía.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-quote">
+      « Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk agh burzum-ishi krimpatul »
+    </div>
+    <p>
+      PixelMordor · Creado con devoción para la comunidad Linux y los entusiastas de Tolkien.
+    </p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+      Compatible con GNOME Shell 45, 46 y 47 · Licencia MIT / GPL-3.0 ·
+      <a href="https://github.com/JohnDSil/pixelmordor" target="_blank" rel="noopener">Repositorio en GitHub</a>
+    </p>
+  </footer>
+
+  <!-- Web Audio API Synthesizer & Canvas Interactive Engine -->
+  <script>
+    // -------------------------------------------------------------
+    // 1. Web Audio API Sound Synthesizer (Zero External Dependencies)
+    // -------------------------------------------------------------
+    let audioCtx = null;
+    let audioEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('btn-audio');
+      btn.innerText = audioEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
+      btn.classList.toggle('active', audioEnabled);
+    }
+
+    function playEruptionSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+
+      // Volcanic white noise burst with sweep lowpass
+      const bufferSize = audioCtx.sampleRate * 2.5;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(350, now);
+      filter.frequency.exponentialRampToValueAtTime(70, now + 2.2);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.7, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+
+      // Low frequency sub-bass thud
+      const osc = audioCtx.createOscillator();
+      const oscGain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(80, now);
+      osc.frequency.exponentialRampToValueAtTime(30, now + 1.8);
+      oscGain.gain.setValueAtTime(0.8, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+
+      whiteNoise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.connect(oscGain);
+      oscGain.connect(audioCtx.destination);
+
+      whiteNoise.start(now);
+      osc.start(now);
+      whiteNoise.stop(now + 2.5);
+      osc.stop(now + 2.0);
+    }
+
+    function playEyeSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(95, now);
+      osc.frequency.linearRampToValueAtTime(140, now + 0.6);
+      osc.frequency.exponentialRampToValueAtTime(70, now + 1.8);
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(400, now);
+      filter.Q.value = 4;
+
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.5, now + 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 1.8);
+    }
+
+    function playRingSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+
+      // Harmonic ringing bell chime (A5, E6, C#7)
+      const freqs = [880, 1318.5, 2217.4];
+      freqs.forEach((f, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, now);
+
+        gain.gain.setValueAtTime(0.3 / (idx + 1), now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5 + idx * 0.4);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 3.0);
+      });
+    }
+
+    function playNazgulSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(1200, now);
+      osc.frequency.linearRampToValueAtTime(2400, now + 0.4);
+      osc.frequency.exponentialRampToValueAtTime(800, now + 1.6);
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(700, now);
+
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.4, now + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 1.6);
+    }
+
+    // -------------------------------------------------------------
+    // 2. Interactive HTML5 Canvas Mordor Scene
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('mordor-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let faseActual = 'noche';
+    let mouse = { x: 0, y: 0, isHover: false };
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.isHover = true;
+    });
+    canvas.addEventListener('mouseleave', () => {
+      mouse.isHover = false;
+    });
+
+    // Particles system
+    const embers = [];
+    const lavaParticles = [];
+    let shockwave = null;
+    let nazgul = { x: -100, y: 80, speed: 2.2, wingAngle: 0, active: true };
+
+    for (let i = 0; i < 70; i++) {
+      embers.push({
+        x: Math.random() * 1100,
+        y: Math.random() * 500,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: -0.6 - Math.random() * 1.2,
+        size: Math.random() * 2.5 + 1,
+        color: Math.random() > 0.4 ? '#ef4444' : '#f59e0b',
+        alpha: Math.random() * 0.8 + 0.2
+      });
+    }
+
+    function setFase(fase) {
+      faseActual = fase;
+      document.querySelectorAll('.btn-tool').forEach(b => {
+        if (b.id && b.id.startsWith('btn-')) b.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`btn-${fase}`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    function triggerErupcion() {
+      playEruptionSound();
+      const rect = canvas.getBoundingClientRect();
+      const craterX = rect.width * 0.35;
+      const craterY = rect.height * 0.58;
+      for (let i = 0; i < 90; i++) {
+        const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.1;
+        const speed = Math.random() * 9 + 4;
+        lavaParticles.push({
+          x: craterX,
+          y: craterY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: Math.random() * 4 + 2,
+          color: Math.random() > 0.3 ? '#ef4444' : '#f59e0b',
+          alpha: 1,
+          decay: Math.random() * 0.015 + 0.008
+        });
+      }
+    }
+
+    function triggerColera() {
+      playEyeSound();
+      const rect = canvas.getBoundingClientRect();
+      const eyeX = rect.width * 0.78;
+      const eyeY = rect.height * 0.38;
+      shockwave = { x: eyeX, y: eyeY, r: 10, alpha: 1 };
+    }
+
+    function triggerNazgul() {
+      playNazgulSound();
+      nazgul.x = -60;
+      nazgul.y = 50 + Math.random() * 70;
+      nazgul.active = true;
+    }
+
+    function triggerAnillo() {
+      playRingSound();
+      runSimCmd('mordor cita');
+    }
+
+    // Animation Loop
+    function render() {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      // 1. Sky Gradient according to phase
+      let skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      if (faseActual === 'noche') {
+        skyGrad.addColorStop(0, '#060108');
+        skyGrad.addColorStop(0.6, '#18030e');
+        skyGrad.addColorStop(1, '#3b0a0a');
+      } else if (faseActual === 'sangre') {
+        skyGrad.addColorStop(0, '#2b0707');
+        skyGrad.addColorStop(0.5, '#5c0f0f');
+        skyGrad.addColorStop(1, '#991b1b');
+      } else {
+        skyGrad.addColorStop(0, '#1c1917');
+        skyGrad.addColorStop(0.6, '#291e1d');
+        skyGrad.addColorStop(1, '#451a1a');
+      }
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Far Mountain Range
+      ctx.fillStyle = '#0a0206';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.7);
+      ctx.lineTo(w * 0.15, h * 0.55);
+      ctx.lineTo(w * 0.35, h * 0.65);
+      ctx.lineTo(w * 0.55, h * 0.52);
+      ctx.lineTo(w * 0.8, h * 0.62);
+      ctx.lineTo(w, h * 0.56);
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Mount Doom (Orodruin)
+      const craterX = w * 0.35;
+      const craterY = h * 0.58;
+      ctx.fillStyle = '#0f030a';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.08, h);
+      ctx.lineTo(craterX - 45, craterY);
+      ctx.lineTo(craterX + 45, craterY);
+      ctx.lineTo(w * 0.62, h);
+      ctx.closePath();
+      ctx.fill();
+
+      // Caldera Lava Glow
+      const lavaGlow = ctx.createRadialGradient(craterX, craterY, 2, craterX, craterY, 40);
+      lavaGlow.addColorStop(0, '#fef08a');
+      lavaGlow.addColorStop(0.3, '#f59e0b');
+      lavaGlow.addColorStop(0.7, '#ef4444');
+      lavaGlow.addColorStop(1, 'rgba(239, 68, 68, 0)');
+      ctx.fillStyle = lavaGlow;
+      ctx.fillRect(craterX - 50, craterY - 30, 100, 50);
+
+      // Lava Fissures down the mountain
+      ctx.strokeStyle = '#f97316';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(craterX - 10, craterY);
+      ctx.lineTo(craterX - 25, craterY + 40);
+      ctx.lineTo(craterX - 40, craterY + 80);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(craterX + 15, craterY);
+      ctx.lineTo(craterX + 30, craterY + 35);
+      ctx.lineTo(craterX + 20, craterY + 75);
+      ctx.stroke();
+
+      // 4. Barad-dûr Spire
+      const towerX = w * 0.78;
+      const towerBaseY = h;
+      const towerTopY = h * 0.38;
+
+      ctx.fillStyle = '#060105';
+      ctx.beginPath();
+      ctx.moveTo(towerX - 60, towerBaseY);
+      ctx.lineTo(towerX - 25, towerTopY + 70);
+      ctx.lineTo(towerX - 20, towerTopY);
+      // Left horn
+      ctx.lineTo(towerX - 35, towerTopY - 45);
+      ctx.lineTo(towerX - 15, towerTopY - 15);
+      // Center crown
+      ctx.lineTo(towerX, towerTopY);
+      // Right horn
+      ctx.lineTo(towerX + 15, towerTopY - 15);
+      ctx.lineTo(towerX + 35, towerTopY - 45);
+      ctx.lineTo(towerX + 20, towerTopY);
+      ctx.lineTo(towerX + 25, towerTopY + 70);
+      ctx.lineTo(towerX + 60, towerBaseY);
+      ctx.closePath();
+      ctx.fill();
+
+      // Window slits
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(towerX - 6, towerTopY + 30, 12, 3);
+      ctx.fillRect(towerX - 8, towerTopY + 60, 16, 3);
+      ctx.fillRect(towerX - 10, towerTopY + 100, 20, 3);
+
+      // 5. The Great Eye of Sauron (Atop Barad-dûr)
+      const eyeX = towerX;
+      const eyeY = towerTopY - 30;
+
+      // Outer flaming aura
+      const auraGrad = ctx.createRadialGradient(eyeX, eyeY, 6, eyeX, eyeY, 55);
+      auraGrad.addColorStop(0, '#fef08a');
+      auraGrad.addColorStop(0.3, '#f59e0b');
+      auraGrad.addColorStop(0.7, '#dc2626');
+      auraGrad.addColorStop(1, 'rgba(220, 38, 38, 0)');
+      ctx.fillStyle = auraGrad;
+      ctx.beginPath();
+      ctx.arc(eyeX, eyeY, 55, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Fiery Eye Shape (Horizontal almond / ellipse)
+      ctx.save();
+      ctx.translate(eyeX, eyeY);
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 26, 16, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Yellow Iris
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 18, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Pupil Tracking the Mouse cursor
+      let pupilOffsetX = 0;
+      let pupilOffsetY = 0;
+      if (mouse.isHover) {
+        const dx = mouse.x - eyeX;
+        const dy = mouse.y - eyeY;
+        const angle = Math.atan2(dy, dx);
+        const dist = Math.min(Math.hypot(dx, dy) / 40, 7);
+        pupilOffsetX = Math.cos(angle) * dist;
+        pupilOffsetY = Math.sin(angle) * (dist * 0.5);
+      } else {
+        // Idle gentle breathing motion
+        pupilOffsetX = Math.sin(Date.now() / 900) * 3;
+      }
+
+      // Vertical Slit Pupil
+      ctx.fillStyle = '#050103';
+      ctx.beginPath();
+      ctx.ellipse(pupilOffsetX, pupilOffsetY, 3.5, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      // 6. Shockwave Ring (Cólera)
+      if (shockwave) {
+        ctx.save();
+        ctx.strokeStyle = `rgba(249, 115, 22, ${shockwave.alpha})`;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(shockwave.x, shockwave.y, shockwave.r, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        shockwave.r += 9;
+        shockwave.alpha -= 0.02;
+        if (shockwave.alpha <= 0) shockwave = null;
+      }
+
+      // 7. Lava Eruption Particles
+      for (let i = lavaParticles.length - 1; i >= 0; i--) {
+        const p = lavaParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.16; // gravity
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0 || p.y > h) {
+          lavaParticles.splice(i, 1);
+          continue;
+        }
+
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+
+      // 8. Flying Nazgûl
+      if (nazgul.active) {
+        nazgul.x += nazgul.speed;
+        nazgul.wingAngle += 0.15;
+        const wingSpan = Math.sin(nazgul.wingAngle) * 8;
+
+        ctx.save();
+        ctx.translate(nazgul.x, nazgul.y);
+        ctx.fillStyle = '#060105';
+        ctx.beginPath();
+        // Body
+        ctx.ellipse(0, 0, 10, 3, 0.1, 0, Math.PI * 2);
+        // Wings
+        ctx.moveTo(-4, 0);
+        ctx.lineTo(-2, -12 - wingSpan);
+        ctx.lineTo(8, -2);
+        ctx.lineTo(12, 0);
+        ctx.lineTo(8, 2);
+        ctx.lineTo(-2, 12 + wingSpan);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+        if (nazgul.x > w + 80) {
+          nazgul.active = false;
+        }
+      } else {
+        // Occasionally spawn Nazgûl
+        if (Math.random() < 0.003) {
+          triggerNazgul();
+        }
+      }
+
+      // 9. Floating Ambient Embers
+      for (let i = 0; i < embers.length; i++) {
+        const e = embers[i];
+        e.x += e.vx;
+        e.y += e.vy;
+        if (e.y < -10) {
+          e.y = h + 10;
+          e.x = Math.random() * w;
+        }
+        ctx.fillStyle = e.color;
+        ctx.globalAlpha = e.alpha;
+        ctx.fillRect(e.x, e.y, e.size, e.size);
+      }
+      ctx.globalAlpha = 1.0;
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    // -------------------------------------------------------------
+    // 3. Simulated Terminal
+    // -------------------------------------------------------------
+    const termOut = document.getElementById('term-output');
+
+    const commandsData = {
+      'mordor estado': `═══════════════════════════════════════════════════════════
+        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        
+═══════════════════════════════════════════════════════════
+  • Elevación Solar Real: +31.5° (☀️ CENIZA DIURNA)
+  • Coordenadas: Madrid (40.4168°N, 3.7038°O)
+  • Extensión GNOME:   Estado: ACTIVE
+  • Cursor: 'MordorCursor'
+  • Acento UI: 'red'
+  • Tema GTK/Libadwaita: Activo (Libadwaita / GTK4)
+  • Atajos Globales: 5 configurados (Super+Alt+{E,S,N,B,F})
+  • Carga CPU: 22,4% usuario
+  • Memoria RAM: 6.2Gi / 16Gi
+═══════════════════════════════════════════════════════════`,
+      'mordor erupcion': `🔥 ¡Super-erupción desatada en el Monte del Destino (Orodruin)!
+Lava fluyendo por las laderas hacia Gorgoroth.`,
+      'mordor colera': `👁 ¡La mirada ardiente del Gran Ojo se fija sobre el reino!
+Onda expansiva sísmica propagada por Barad-dûr.`,
+      'mordor nazgul': `🦅 ¡Chillido espectral del Rey Brujo y picado de combate del Nazgûl!`,
+      'mordor cita': `📜 « Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk agh burzum-ishi krimpatul »
+   — Inscripción de Fuego grabada en el Anillo Único`,
+      'mordor atajos': `⌨️ Atajos de teclado globales de GNOME configurados:
+   • Super + Alt + E -> Super-erupción en el Orodruin
+   • Super + Alt + S -> Cólera del Ojo de Sauron
+   • Super + Alt + N -> Chillido y ataque en picado del Nazgûl
+   • Super + Alt + B -> Bloquear pantalla en El Morannon
+   • Super + Alt + F -> Forja interactiva del Anillo Único (Ptyxis)`,
+      'mordor gtk on': `🎨 Tema GTK4/Libadwaita y GTK3 de Mordor activado con éxito.
+   • Ventanas obsidiana (#0d0308) con acentos volcánicos carmesí (#ef4444)
+   • Scrollbars con aspecto de magma y botones sugeridos en gradiente ardiente
+   • Compatible con todas las aplicaciones GNOME (Archivos, Ptyxis, Ajustes, etc.)`,
+      'mordor forjar': `
+             .---.
+          .-/  .  \\-.
+         / /  / \\  \\ \\
+        | |  | O |  | |    [ FORJA DEL ANILLO ÚNICO ]
+         \\ \\  \\ /  / /     En las grietas del Orodruin...
+          '-\\  '  /-'
+             '---'
+   ¡El Anillo Único ha sido completado con fuego del Monte del Destino!`
+    };
+
+    function runSimCmd(cmd) {
+      if (cmd === 'mordor erupcion') triggerErupcion();
+      if (cmd === 'mordor colera') triggerColera();
+      if (cmd === 'mordor nazgul') triggerNazgul();
+      if (cmd === 'mordor forjar') playRingSound();
+
+      let res = commandsData[cmd] || `Comando no reconocido: '${cmd}'. Escribe 'mordor info' para ayuda.`;
+      termOut.innerHTML += `\n<span class="term-prompt">👁[2asird@PC213:~/pixelmordor]</span> <span class="term-git">(main 💍)</span> <span class="term-arrow">❯</span> ${cmd}\n${res}`;
+      termOut.scrollTop = termOut.scrollHeight;
+    }
+
+    function handleTermKey(e) {
+      if (e.key === 'Enter') {
+        const input = document.getElementById('term-cli');
+        const cmd = input.value.trim();
+        if (cmd) {
+          runSimCmd(cmd);
+          input.value = '';
+        }
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 4. One-Click Copy
+    // -------------------------------------------------------------
+    function copyInstall() {
+      const text = 'curl -fsSL https://raw.githubusercontent.com/JohnDSil/pixelmordor/main/instalar.sh | bash';
+      navigator.clipboard.writeText(text).then(() => {
+        const textSpan = document.getElementById('copy-text');
+        const iconSpan = document.getElementById('copy-icon');
+        textSpan.innerText = '¡Copiado!';
+        iconSpan.innerText = '✅';
+        setTimeout(() => {
+          textSpan.innerText = 'Copiar';
+          iconSpan.innerText = '📋';
+        }, 2200);
+      });
+    }
+  </script>
+</body>
+</html>

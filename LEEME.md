@@ -122,6 +122,8 @@ mordor bloqueo   # Configurar o probar pantalla de bloqueo (Morannon)
 mordor prompt    # Alternar prompt temático de Mordor en Bash
 mordor sonido    # Alternar tema de sonido XDG para eventos de sistema
 mordor forjar    # Animación interactiva de la Forja del Anillo Único
+mordor gtk       # Activar o desactivar tema GTK4/Libadwaita y GTK3 [on|off]
+mordor atajos    # Activar o desactivar atajos globales GNOME [on|off]
 ```
 
 ---
@@ -158,6 +160,18 @@ mordor forjar    # Animación interactiva de la Forja del Anillo Único
    - Animación interactiva en ASCII 3D y colores ANSI de la forja del Anillo Único en Orodruin con versos en Tengwar y efectos de sonido.
 9. **📦 Paquete EGO Oficial para extensions.gnome.org:**
    - Archivo `.zip` compilado y validado en `gnome/pixelzen@mosqui1988.github.io.shell-extension.zip` listo para su publicación directa en la tienda oficial de GNOME Extensions.
+10. **🎨 Tema GTK4 / Libadwaita y GTK3 (`mordor gtk [on|off]`):**
+    - Estilizado de ventanas obsidian (`#0d0308`), acentos volcánicos carmesí (`#ef4444`, `#dc2626`), barras de scroll con aspecto de magma y botones sugeridos en gradiente ardiente. Compatible con todas las aplicaciones GNOME (Archivos, Ajustes, Ptyxis, etc.).
+11. **⌨️ Atajos de Teclado Globales GNOME (`mordor atajos [on|off]`):**
+    - Integración nativa con `org.gnome.settings-daemon.plugins.media-keys`:
+      - `Super + Alt + E`: Super-erupción en el Monte del Destino (Orodruin).
+      - `Super + Alt + S`: Cólera del Gran Ojo (onda expansiva ígnea).
+      - `Super + Alt + N`: Chillido y ataque en picado del Nazgûl.
+      - `Super + Alt + B`: Bloquear pantalla en El Morannon.
+      - `Super + Alt + F`: Forja 3D interactiva del Anillo Único en Ptyxis.
+12. **🌐 Sitio Web Interactivo y GitHub Pages (`docs/index.html`):**
+    - Landing page con HTML5 Canvas en tiempo real: Orodruin en erupción, Ojo de Sauron con pupila que sigue al ratón, Nazgûl en vuelo, sintetizador de audio puro con Web Audio API (cero dependencias externas) y simulador de terminal interactivo.
+    - Publicable de inmediato en GitHub Pages en `https://johndsil.github.io/pixelmordor/`.
 
 ---
 

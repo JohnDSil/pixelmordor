@@ -51,6 +51,13 @@ if [ -f "$AQUI/Mordor.palette" ]; then
     fi
 fi
 
+# 2c. Aplicar tema GTK4 / Libadwaita y GTK3 de Mordor
+if [ -f "$AQUI/gnome/gtk/mordor-gtk.css" ]; then
+    mkdir -p "$HOME/.config/gtk-4.0" "$HOME/.config/gtk-3.0"
+    cp "$AQUI/gnome/gtk/mordor-gtk.css" "$HOME/.config/gtk-4.0/gtk.css"
+    cp "$AQUI/gnome/gtk/mordor-gtk.css" "$HOME/.config/gtk-3.0/gtk.css"
+fi
+
 # 3. Actualizar la extensión de GNOME con las capas animadas y el HUD
 UUID="pixelzen@mosqui1988.github.io"
 EXT_DIR="$HOME/.local/share/gnome-shell/extensions/$UUID"

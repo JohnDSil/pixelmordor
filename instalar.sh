@@ -62,14 +62,25 @@ cp "$AQUI/mordor" "$HOME/.local/bin/mordor"
 chmod +x "$HOME/.local/bin/mordor"
 
 if [ -f "$HOME/.bashrc" ] && ! grep -q "complete -W .*mordor" "$HOME/.bashrc"; then
-    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar info" mordor' >> "$HOME/.bashrc"
+    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar gtk atajos info" mordor' >> "$HOME/.bashrc"
 fi
 
-# 4. Desplegar extensión para GNOME Shell
-echo "==> 4/5 Desplegando extensión interactiva de GNOME Shell..."
+# 4. Desplegar extensión para GNOME Shell y temas GTK
+echo "==> 4/5 Desplegando extensión interactiva de GNOME Shell y tema GTK..."
 EXT_DIR="$HOME/.local/share/gnome-shell/extensions/$UUID"
 mkdir -p "$EXT_DIR"
 cp -r "$AQUI/gnome/$UUID/"* "$EXT_DIR/"
+
+# Desplegar tema GTK4 / Libadwaita
+if [ -f "$AQUI/gnome/gtk/mordor-gtk.css" ]; then
+    mkdir -p "$EXT_DIR/gtk" "$HOME/.local/share/pixelzen/gtk"
+    cp "$AQUI/gnome/gtk/mordor-gtk.css" "$EXT_DIR/gtk/"
+    cp "$AQUI/gnome/gtk/mordor-gtk.css" "$HOME/.local/share/pixelzen/gtk/"
+    "$HOME/.local/bin/mordor" gtk on >/dev/null 2>&1 || true
+fi
+
+# Configurar atajos de teclado globales GNOME
+"$HOME/.local/bin/mordor" atajos on >/dev/null 2>&1 || true
 
 # Compilar esquemas GSettings
 if command -v glib-compile-schemas >/dev/null 2>&1 && [ -d "$EXT_DIR/schemas" ]; then

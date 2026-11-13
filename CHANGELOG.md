@@ -5,6 +5,30 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 
 ---
 
+## [1.5.0] - 2026-11-13
+
+### Añadido
+- **🎨 Tema GTK4 / Libadwaita y GTK3 (`mordor gtk [on|off]`):**
+  - Estilos volcánicos en `gnome/gtk/mordor-gtk.css` integrados con `~/.config/gtk-4.0/gtk.css` y `~/.config/gtk-3.0/gtk.css`.
+  - Ventanas obsidiana (`#0d0308`), acentos carmesí de Libadwaita (`#ef4444`, `#dc2626`), barras de scroll con brillo de lava y botones sugeridos en gradiente ígneo.
+  - Subcomando CLI: `mordor gtk [on|off|estado]`.
+- **⌨️ Atajos de Teclado Globales GNOME (`mordor atajos [on|off]`):**
+  - Mapeo nativo de 5 atajos globales en GNOME Settings Daemon:
+    - `Super + Alt + E`: Super-erupción en el Orodruin (`mordor erupcion`).
+    - `Super + Alt + S`: Cólera del Gran Ojo de Sauron (`mordor colera`).
+    - `Super + Alt + N`: Chillido y ataque en picado del Nazgûl (`mordor nazgul`).
+    - `Super + Alt + B`: Bloquear pantalla en El Morannon (`mordor bloqueo lock`).
+    - `Super + Alt + F`: Forja interactiva 3D del Anillo Único en Ptyxis (`ptyxis -- mordor forjar`).
+  - Subcomando CLI: `mordor atajos [on|off|estado]`.
+- **🌐 Sitio Web Interactivo en GitHub Pages (`docs/index.html`):**
+  - Landing page con HTML5 Canvas en tiempo real a 60 FPS con Orodruin en erupción, Ojo de Sauron cuya pupila sigue suavemente el cursor del ratón, y vuelo del Nazgûl.
+  - Sintetizador de audio puro en Web Audio API (cero dependencias externas o MP3s) para erupciones volcánicas, drone de Sauron, campanadas armónicas del Anillo y chillido del Nazgûl.
+  - Simulador interactivo de la terminal Ptyxis con paleta oficial de Mordor y ejecución de comandos en vivo.
+  - Galería de capturas en alta fidelidad y botón de instalación rápida en 1 clic.
+  - Desplegable de inmediato en GitHub Pages (`https://johndsil.github.io/pixelmordor/`).
+
+---
+
 ## [1.4.0] - 2026-11-13
 
 ### Añadido
