@@ -47,7 +47,7 @@ if [ -f "$AQUI/Mordor.palette" ]; then
     cp "$AQUI/Mordor.palette" "$HOME/.local/share/org.gnome.Ptyxis/palettes/"
     prof_uuid=$(gsettings get org.gnome.Ptyxis default-profile-uuid 2>/dev/null | tr -d "'" || true)
     if [ -n "$prof_uuid" ]; then
-        gsettings set "org.gnome.Ptyxis.Profile:$prof_uuid" palette 'Mordor' 2>/dev/null || true
+        gsettings set "org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/$prof_uuid/" palette 'Mordor' 2>/dev/null || true
     fi
 fi
 

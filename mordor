@@ -139,7 +139,7 @@ case "${1:-info}" in
         fi
         prof_uuid=$(gsettings get org.gnome.Ptyxis default-profile-uuid 2>/dev/null | tr -d "'" || true)
         if [ -n "$prof_uuid" ]; then
-            gsettings set "org.gnome.Ptyxis.Profile:$prof_uuid" palette 'Mordor' 2>/dev/null || true
+            gsettings set "org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/$prof_uuid/" palette 'Mordor' 2>/dev/null || true
             echo -e "\033[1;31m🎨 Paleta oficial de Mordor (rojo lava / obsidiana) aplicada al terminal Ptyxis.\033[0m"
         else
             echo "Perfil de Ptyxis no detectado, paleta instalada en $PTYXIS_DIR/Mordor.palette."
