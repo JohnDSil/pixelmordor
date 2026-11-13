@@ -89,6 +89,8 @@ Incluye un tema completo de cursor Xcursor generado píxel a píxel:
 
 ## 💻 Herramienta de Terminal `mordor`
 
+![Terminal Ptyxis con la paleta oficial de Mordor y reporte astronómico](capturas/mordor-terminal.png)
+
 Incluye la utilidad de línea de comandos `mordor` con autocompletado en Bash:
 
 ```bash
@@ -138,6 +140,8 @@ mordor bloqueo   # Configurar o probar pantalla de bloqueo (Morannon)
    - Fondo de pantalla exclusivo para la pantalla de bloqueo (`fondos/mordor-bloqueo.png`) que representa la imponente silueta de la **Puerta Negra de Mordor (*Morannon*)**, las torres gemelas de los Dientes de Mordor (*Carchost y Narchost*) y el Gran Ojo de Sauron vigilando la sesión con el lema: *"NO PUEDES ESCONDERTE. ¡TE VEO!"*.
    - Estilizado de GNOME Shell en `stylesheet.css` para el reloj y campo de contraseña con tipografía rúnica y resplandor de fuego.
    - Opción en el menú superior de GNOME y comando CLI: `mordor bloqueo`.
+
+   ![Pantalla de Bloqueo de Mordor: El Morannon](capturas/mordor-bloqueo.png)
 
 ---
 
