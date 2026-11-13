@@ -1,0 +1,183 @@
+#!/usr/bin/env bash
+# mordor - Herramienta de línea de comandos para el tema Mordor (LOTR PixelZen)
+set -euo pipefail
+
+UUID="pixelzen@mosqui1988.github.io"
+SCHEMAS="$HOME/.local/share/gnome-shell/extensions/$UUID/schemas"
+SOUNDS_DIR="$HOME/.local/share/gnome-shell/extensions/$UUID/sounds"
+
+gset() {
+    gsettings --schemadir "$SCHEMAS" set org.gnome.shell.extensions.pixelzen "$@" 2>/dev/null || true
+}
+
+suena() {
+    local s="$SOUNDS_DIR/$1.wav"
+    if [ -f "$s" ]; then
+        (canberra-gtk-play -f "$s" 2>/dev/null || pw-play "$s" 2>/dev/null || aplay -q "$s" 2>/dev/null || true) &
+    fi
+}
+
+CITAS=(
+    "Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk agh burzum-ishi krimpatul. — Sauron"
+    "No hay vida en el vacío... solo muerte. No puedes esconderte. ¡Te veo! — El Gran Ojo"
+    "Forjado en las profundidades ardientes del Monte del Destino (Orodruin). — El Señor Oscuro"
+    "¿Conoces el miedo? Se congelará tu carne y tu corazón morirá ante mi presencia. — Rey Brujo de Angmar"
+    "La sombra se extiende sobre todo el mundo. La era del Hombre ha terminado. — Boca de Sauron"
+    "Ni una brizna de hierba crece en la tierra marchita donde se alzan las sombras. — Tierra de las Sombras"
+    "Un Anillo para gobernarlos a todos, un Anillo para encontrarlos... — Inscripción de Fuego"
+)
+
+case "${1:-info}" in
+    dia)
+        gset ciclo-rapido false
+        gset hora-simulada 13.5
+        echo -e "\033[1;33m🌋 Mordor:\033[0m Modo Ceniza Diurna activado (Cénit solar)."
+        ;;
+    noche)
+        gset ciclo-rapido false
+        gset hora-simulada 23.0
+        suena sauron
+        echo -e "\033[1;35m🌑 Mordor:\033[0m Modo Noche de Sombras activado."
+        ;;
+    sangre|dorado|ocaso)
+        gset ciclo-rapido false
+        gset hora-simulada 18.0
+        suena anillo
+        echo -e "\033[1;31m🌅 Mordor:\033[0m Modo Hora de Sangre activado (Crepúsculo carmesí)."
+        ;;
+    auto|real)
+        gset ciclo-rapido false
+        gset hora-simulada -1.0
+        echo -e "\033[1;32m⏱️ Mordor:\033[0m Sincronización astronómica real activa (Algoritmo NOAA para Madrid)."
+        ;;
+    demo|ciclo)
+        gset hora-simulada -1.0
+        gset ciclo-rapido true
+        echo -e "\033[1;36m⚡ Mordor:\033[0m Demostración acelerada activa (24 horas en 90 segundos)."
+        ;;
+    erupcion|volcan)
+        suena erupcion
+        echo -e "\033[1;31m🔥 ¡Super-erupción desatada en el Monte del Destino (Orodruin)!\033[0m"
+        ;;
+    colera|ojo|sauron)
+        suena sauron
+        echo -e "\033[1;31m👁 ¡La cólera del Gran Ojo se extiende sobre Barad-dûr!\033[0m"
+        ;;
+    nazgul|bestia)
+        suena nazgul
+        echo -e "\033[1;35m🦅 ¡Un Nazgûl se lanza en picado sobre las llanuras con un chillido desgarrador!\033[0m"
+        ;;
+    hobbits|frodo|sam)
+        suena anillo
+        echo -e "\033[1;33m💍 Frodo y Sam alzan el Frasco de Galadriel en las crestas de Gorgoroth.\033[0m"
+        ;;
+    ambiente)
+        sub="${2:-toggle}"
+        PID_FILE="/tmp/mordor_ambiente.pid"
+        if [ "$sub" = "off" ] || ([ "$sub" = "toggle" ] && [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null); then
+            if [ -f "$PID_FILE" ]; then
+                kill "$(cat "$PID_FILE")" 2>/dev/null || true
+                rm -f "$PID_FILE"
+            fi
+            echo -e "\033[1;30m🌋 Eco sísmico subterráneo detenido.\033[0m"
+        else
+            (
+                while true; do
+                    if [ -f "$SOUNDS_DIR/ambiente.wav" ]; then
+                        canberra-gtk-play -f "$SOUNDS_DIR/ambiente.wav" 2>/dev/null || pw-play "$SOUNDS_DIR/ambiente.wav" 2>/dev/null || aplay -q "$SOUNDS_DIR/ambiente.wav" 2>/dev/null || true
+                    fi
+                    sleep 6
+                done
+            ) >/dev/null 2>&1 &
+            echo $! > "$PID_FILE"
+            echo -e "\033[1;31m🌋 Eco sísmico subterráneo continuo activado (bucle ambiental).\033[0m"
+        fi
+        ;;
+    cita)
+        idx=$(( RANDOM % ${#CITAS[@]} ))
+        echo -e "\033[1;33m📜 \"${CITAS[$idx]}\"\033[0m"
+        suena anillo
+        ;;
+    cursor)
+        gsettings set org.gnome.desktop.interface cursor-theme 'MordorCursor' || true
+        echo -e "\033[1;31m🗡 Cursor temático 'MordorCursor' (Daga de Morgul y Guantelete) aplicado.\033[0m"
+        ;;
+    hud)
+        actual=$(gsettings --schemadir "$SCHEMAS" get org.gnome.shell.extensions.pixelzen hud 2>/dev/null || echo "true")
+        if [ "$actual" = "true" ]; then
+            gset hud false
+            echo -e "\033[1;30m📊 Panel HUD oculto.\033[0m"
+        else
+            gset hud true
+            echo -e "\033[1;32m📊 Panel HUD visible.\033[0m"
+        fi
+        ;;
+    estado)
+        echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
+        echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
+        echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
+        # Cálculo solar
+        python3 -c "
+import math, datetime
+now = datetime.datetime.now(datetime.timezone.utc)
+lat, lon = 40.4168, -3.7038
+n = now.timetuple().tm_yday
+gamma = 2.0 * math.pi / 365.0 * (n - 1 + (now.hour - 12) / 24.0)
+eqtime = 229.18 * (0.000075 + 0.001868 * math.cos(gamma) - 0.032077 * math.sin(gamma) - 0.014615 * math.cos(2 * gamma) - 0.040849 * math.sin(2 * gamma))
+decl = 0.006918 - 0.399912 * math.cos(gamma) + 0.070257 * math.sin(gamma) - 0.006758 * math.cos(2 * gamma) + 0.000907 * math.sin(2 * gamma)
+time_offset = eqtime + 4.0 * lon
+tst = (now.hour * 60 + now.minute + now.second / 60.0 + time_offset) % 1440
+ha = math.radians((tst / 4.0) - 180.0)
+lat_r = math.radians(lat)
+sza = math.acos(math.sin(lat_r) * math.sin(decl) + math.cos(lat_r) * math.cos(decl) * math.cos(ha))
+elev = 90.0 - math.degrees(sza)
+fase = '☀️ CENIZA DIURNA' if elev >= 10 else ('🌅 HORA DE SANGRE (Crepúsculo)' if elev >= -6 else '🌑 NOCHE DE SOMBRAS')
+print(f'  • Elevación Solar Real: {elev:+.1f}° ({fase})')
+print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
+"
+        echo "  • Extensión GNOME: $(gnome-extensions info $UUID 2>/dev/null | grep Estado || echo 'Activa')"
+        echo "  • Cursor: $(gsettings get org.gnome.desktop.interface cursor-theme 2>/dev/null)"
+        echo "  • Acento UI: $(gsettings get org.gnome.desktop.interface accent-color 2>/dev/null)"
+        echo "  • Carga CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2}')% usuario"
+        echo "  • Memoria RAM: $(free -h | awk '/Mem:/ {print $3 " / " $2}')"
+        echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
+        ;;
+    banner|info|*)
+        echo -e "\033[1;31m"
+        echo "        /\\          /\\"
+        echo "       /  \\        /  \\"
+        echo "      / /\\ \\      / /\\ \\"
+        echo "     / /  \\ \\    / /  \\ \\"
+        echo "    /_/    \\_\\  /_/    \\_\\"
+        echo "         \\   ||   /"
+        echo "          \\  ||  /"
+        echo "       .---.-||-.---."
+        echo "      /   (  👁  )   \\"
+        echo "     |   .-------.   |"
+        echo "     |  /  SAURON \\  |"
+        echo "     | | TIERRA DE | |"
+        echo "     |  \\  MORDOR /  |"
+        echo "      \\  '-------'  /"
+        echo "       '---.---.---'"
+        echo "           | | |"
+        echo "          /  |  \\"
+        echo "         /___|___\\"
+        echo -e "\033[0m"
+        echo -e "\033[1;33mEl Señor de los Anillos: Tema Mordor PixelZen\033[0m"
+        echo "Comandos disponibles:"
+        echo "  mordor estado    -> Reporte del estado del reino y elevación solar"
+        echo "  mordor auto      -> Sincronizar en tiempo real con el sol (NOAA)"
+        echo "  mordor dia       -> Probar el mediodía (Ceniza Diurna)"
+        echo "  mordor sangre    -> Probar el atardecer (Hora de Sangre)"
+        echo "  mordor noche     -> Probar la noche profunda (Sombras)"
+        echo "  mordor demo      -> Ciclo demostración de 24h en 90s"
+        echo "  mordor erupcion  -> Desatar super-erupción en Orodruin"
+        echo "  mordor colera    -> Desatar cólera del Ojo de Sauron"
+        echo "  mordor nazgul    -> Desatar chillido y ataque en picado del Nazgûl"
+        echo "  mordor hobbits   -> Resplandor del Frasco de Galadriel"
+        echo "  mordor ambiente  -> Alternar eco sísmico subterráneo en bucle"
+        echo "  mordor cita      -> Proclamar cita del Anillo Único"
+        echo "  mordor cursor    -> Aplicar cursor temático de Mordor"
+        echo "  mordor hud       -> Alternar visibilidad del panel HUD"
+        ;;
+esac
