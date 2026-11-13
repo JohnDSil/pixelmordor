@@ -21,9 +21,21 @@ cp -n "$AQUI"/fuentes/*.{otf,ttf} "$HOME/.local/share/fonts/pixelzen/" 2>/dev/nu
 fc-cache -f "$HOME/.local/share/fonts/pixelzen" >/dev/null 2>&1 || true
 
 # 2. Generar e instalar cursor temático MordorCursor
-echo "==> 2/5 Compilando e instalando cursor temático 'MordorCursor'..."
+echo "==> 2/5 Compilando e instalando cursor temático 'MordorCursor' y paletas..."
 if [ -f "$AQUI/src/cursor.py" ]; then
     python3 "$AQUI/src/cursor.py" >/dev/null 2>&1 || true
+fi
+
+# Instalar paleta oficial para Ptyxis Terminal
+if [ -f "$AQUI/Mordor.palette" ]; then
+    mkdir -p "$HOME/.local/share/org.gnome.Ptyxis/palettes"
+    cp "$AQUI/Mordor.palette" "$HOME/.local/share/org.gnome.Ptyxis/palettes/"
+fi
+
+# Instalar tema para VS Code si está instalado
+if [ -d "$AQUI/vscode" ]; then
+    mkdir -p "$HOME/.vscode/extensions/mordor-theme-1.0.0"
+    cp -r "$AQUI/vscode/"* "$HOME/.vscode/extensions/mordor-theme-1.0.0/" 2>/dev/null || true
 fi
 
 # 3. Instalar herramienta de línea de comandos 'mordor'

@@ -114,6 +114,13 @@ export class Escena {
         this.naz2CurY = 92;
         this.nazgulDive = 0;
 
+        // Eficiencia energética inteligente y clima real
+        this.modoAhorro = false;
+        this.ahorroBateriaAuto = false;
+        this.climaRealActivo = true;
+        this.clima = { ok: false, tormenta: false, lluvia: false, niebla: false, temp: 15, wind: 10, desc: '' };
+        this._timerClima = 0;
+
         // Easter Egg: Frodo y Sam infiltrándose en Gorgoroth (Y=304)
         this.hobbits = { x: 252, y: 304, state: 'hidden', glint: 0 };
 
@@ -147,6 +154,7 @@ export class Escena {
         this._cargaTexturas();
         this._leeAjustes();
         this.recalcula();
+        this._iniciaClima();
     }
 
     _suena(nombre) {
@@ -279,6 +287,71 @@ export class Escena {
         this.relampagoManual = 4;
         this._suena('erupcion');
         this.pinta();
+    }
+
+    setModoAhorro(activo) {
+        this.modoAhorro = activo;
+        this._programa();
+    }
+
+    setClimaReal(activo) {
+        this.climaRealActivo = activo;
+        if (activo) this._consultaClima();
+    }
+
+    _iniciaClima() {
+        this._consultaClima();
+        if (this._timerClima) GLib.source_remove(this._timerClima);
+        this._timerClima = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1800, () => {
+            if (this.climaRealActivo) this._consultaClima();
+            return GLib.SOURCE_CONTINUE;
+        });
+    }
+
+    _consultaClima() {
+        if (!this.climaRealActivo) return;
+        try {
+            const proc = Gio.Subprocess.new(['python3', '-I', `${this._dir}/code/clima.py`],
+                Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_SILENCE);
+            proc.communicate_utf8_async(null, null, (p, res) => {
+                try {
+                    const [, out] = p.communicate_utf8_finish(res);
+                    const d = JSON.parse(out);
+                    if (d && d.ok) {
+                        this.clima = d;
+                        this.pinta();
+                    }
+                } catch (e) {}
+            });
+        } catch (e) {}
+    }
+
+    _compruebaBateria() {
+        try {
+            const f = Gio.File.new_for_path('/sys/class/power_supply');
+            if (!f.query_exists(null)) return;
+            const en = f.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
+            let info, baja = false;
+            while ((info = en.next_file(null)) !== null) {
+                const nombre = info.get_name();
+                if (nombre.startsWith('BAT')) {
+                    const statusFile = Gio.File.new_for_path(`/sys/class/power_supply/${nombre}/status`);
+                    const capFile = Gio.File.new_for_path(`/sys/class/power_supply/${nombre}/capacity`);
+                    if (statusFile.query_exists(null) && capFile.query_exists(null)) {
+                        const [, stBytes] = statusFile.load_contents(null);
+                        const [, capBytes] = capFile.load_contents(null);
+                        const st = new TextDecoder().decode(stBytes).trim();
+                        const cap = parseInt(new TextDecoder().decode(capBytes).trim(), 10);
+                        if (st === 'Discharging' && cap <= 25) baja = true;
+                    }
+                    break;
+                }
+            }
+            if (this.ahorroBateriaAuto !== baja) {
+                this.ahorroBateriaAuto = baja;
+                this._programa();
+            }
+        } catch (e) {}
     }
 
     _cargaTexturas() {
@@ -497,11 +570,13 @@ export class Escena {
     _programa() {
         if (this._timer) { GLib.source_remove(this._timer); this._timer = 0; }
         if (this._pausa || !this._lienzo) return;
-        const ms = this.animar ? Math.round(1000 / this.fps) : 60000;
+        const fpsObj = (this.modoAhorro || this.ahorroBateriaAuto) ? 12 : this.fps;
+        const ms = this.animar ? Math.round(1000 / fpsObj) : 60000;
         this._timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ms, () => {
             if (this.animar) {
                 this.tick++;
-                if (this.demo || this.tick % this.fps === 0) this.recalcula();
+                if (this.tick % 150 === 0) this._compruebaBateria();
+                if (this.demo || this.tick % fpsObj === 0) this.recalcula();
             } else {
                 this.recalcula();
             }
@@ -536,8 +611,9 @@ export class Escena {
         const t = this.tick, D = this.D;
         cr.setOperator(Cairo.Operator.CLEAR); cr.paint(); cr.setOperator(Cairo.Operator.OVER);
 
-        // Relámpago carmesí
-        const relampagoFase = (this.relampagoManual > 0) ? (4 - this.relampagoManual) : (t % 170);
+        // Relámpago carmesí (se intensifica con tormenta real)
+        const periodoRelampago = (this.clima && this.clima.tormenta) ? 45 : 170;
+        const relampagoFase = (this.relampagoManual > 0) ? (4 - this.relampagoManual) : (t % periodoRelampago);
         if (this.relampagoManual > 0) this.relampagoManual--;
 
         if (relampagoFase < 4) {
@@ -998,7 +1074,8 @@ export class Escena {
 
         // 6. LLUVIA DE CENIZA VOLCÁNICA EN SUSPENSIÓN (ATMÓSFERA DE MORDOR)
         if (this.lluviaCeniza) {
-            for (let i = 0; i < this.ashFlakes.length; i++) {
+            const limiteCenizas = (this.modoAhorro || this.ahorroBateriaAuto) ? 8 : (this.clima?.niebla ? 45 : this.ashFlakes.length);
+            for (let i = 0; i < Math.min(this.ashFlakes.length, limiteCenizas); i++) {
                 const f = this.ashFlakes[i];
                 f.y = (f.y + f.vy) % H;
                 f.x = (f.x - 0.20 + Math.sin(t * 0.05 + f.sway) * 0.35 + W) % W;
@@ -1012,6 +1089,10 @@ export class Escena {
     destroy() {
         if (this._timer) GLib.source_remove(this._timer);
         this._timer = 0;
+        if (this._timerClima) {
+            GLib.source_remove(this._timerClima);
+            this._timerClima = 0;
+        }
         if (this.ambienteTimer) {
             GLib.source_remove(this.ambienteTimer);
             this.ambienteTimer = 0;

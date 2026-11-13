@@ -1,0 +1,127 @@
+{
+  "$schema": "vscode://schemas/color-theme",
+  "name": "Mordor Dark (LOTR)",
+  "type": "dark",
+  "colors": {
+    "activityBar.background": "#14070a",
+    "activityBar.foreground": "#fbbf24",
+    "activityBar.inactiveForeground": "#78350f",
+    "activityBarBadge.background": "#ef4444",
+    "activityBarBadge.foreground": "#ffffff",
+    "badge.background": "#ef4444",
+    "badge.foreground": "#ffffff",
+    "button.background": "#b91c1c",
+    "button.foreground": "#ffffff",
+    "button.hoverBackground": "#dc2626",
+    "editor.background": "#0c0507",
+    "editor.foreground": "#e6dedc",
+    "editor.lineHighlightBackground": "#160a0e",
+    "editor.selectionBackground": "#451a2880",
+    "editorCursor.foreground": "#fbbf24",
+    "editorGroupHeader.tabsBackground": "#0c0507",
+    "editorIndentGuide.activeBackground": "#4a191d",
+    "editorIndentGuide.background": "#260f14",
+    "editorLineNumber.activeForeground": "#fbbf24",
+    "editorLineNumber.foreground": "#4a191d",
+    "editorWhitespace.foreground": "#260f14",
+    "focusBorder": "#dc2626",
+    "list.activeSelectionBackground": "#260f14",
+    "list.activeSelectionForeground": "#fbbf24",
+    "list.hoverBackground": "#180a0f",
+    "sideBar.background": "#100608",
+    "sideBar.border": "#260f14",
+    "sideBar.foreground": "#b39d98",
+    "sideBarSectionHeader.background": "#160a0e",
+    "sideBarSectionHeader.foreground": "#fbbf24",
+    "statusBar.background": "#240b10",
+    "statusBar.border": "#4a191d",
+    "statusBar.foreground": "#fef08a",
+    "tab.activeBackground": "#180a0f",
+    "tab.activeBorderTop": "#ef4444",
+    "tab.activeForeground": "#fbbf24",
+    "tab.border": "#160a0e",
+    "tab.inactiveBackground": "#0c0507",
+    "tab.inactiveForeground": "#78350f",
+    "terminal.ansiBlack": "#160a0e",
+    "terminal.ansiBlue": "#b91c1c",
+    "terminal.ansiBrightBlack": "#451a28",
+    "terminal.ansiBrightBlue": "#f87171",
+    "terminal.ansiBrightCyan": "#fde047",
+    "terminal.ansiBrightGreen": "#22c55e",
+    "terminal.ansiBrightMagenta": "#c084fc",
+    "terminal.ansiBrightRed": "#ef4444",
+    "terminal.ansiBrightWhite": "#ffffff",
+    "terminal.ansiBrightYellow": "#fbbf24",
+    "terminal.ansiCyan": "#ca8a04",
+    "terminal.ansiGreen": "#16a34a",
+    "terminal.ansiMagenta": "#9333ea",
+    "terminal.ansiRed": "#dc2626",
+    "terminal.ansiWhite": "#e6dedc",
+    "terminal.ansiYellow": "#d97706",
+    "terminal.background": "#0c0507",
+    "terminal.foreground": "#e6dedc",
+    "titleBar.activeBackground": "#0c0507",
+    "titleBar.activeForeground": "#e6dedc",
+    "titleBar.border": "#260f14"
+  },
+  "tokenColors": [
+    {
+      "name": "Comentarios de Ceniza",
+      "scope": ["comment", "punctuation.definition.comment"],
+      "settings": {
+        "foreground": "#6e5653",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "name": "Palabras Clave de Oro del Anillo",
+      "scope": ["keyword", "storage", "storage.type", "keyword.control"],
+      "settings": {
+        "foreground": "#fbbf24",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Cadenas de Lava",
+      "scope": ["string", "string.quoted"],
+      "settings": {
+        "foreground": "#f97316"
+      }
+    },
+    {
+      "name": "Funciones de la Forja",
+      "scope": ["entity.name.function", "support.function"],
+      "settings": {
+        "foreground": "#ef4444"
+      }
+    },
+    {
+      "name": "Tipos y Clases de Angmar",
+      "scope": ["entity.name.type", "entity.name.class", "support.type", "support.class"],
+      "settings": {
+        "foreground": "#c084fc"
+      }
+    },
+    {
+      "name": "Constantes y Números Ardientes",
+      "scope": ["constant.numeric", "constant.language", "support.constant"],
+      "settings": {
+        "foreground": "#fde047"
+      }
+    },
+    {
+      "name": "Variables de la Tierra Media",
+      "scope": ["variable", "variable.other"],
+      "settings": {
+        "foreground": "#e6dedc"
+      }
+    },
+    {
+      "name": "Operadores y Puntuación",
+      "scope": ["keyword.operator", "punctuation"],
+      "settings": {
+        "foreground": "#b39d98"
+      }
+    }
+  ]
+}

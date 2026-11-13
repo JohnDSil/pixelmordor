@@ -113,7 +113,26 @@ mordor ambiente  # Bucle sísmico subterráneo continuo
 mordor cita      # Proclamar cita del Anillo Único
 mordor cursor    # Aplicar cursor temático de Mordor
 mordor hud       # Alternar panel HUD
+mordor clima     # Consultar clima real sincronizado (Open-Meteo)
+mordor terminal  # Aplicar paleta oficial de Mordor a Ptyxis
+mordor notif     # Enviar notificación de prueba de Sauron
 ```
+
+---
+
+## ⚡ Novedades Avanzadas
+
+1. **🔋 Modo Eficiencia Energética / Batería Inteligente:**
+   - Detección automática del nivel de batería a través de `/sys/class/power_supply`.
+   - Si la batería baja de 25% y se está descargando, se reducen los fotogramas de 24 FPS a 12 FPS y las partículas de ceniza a 8 para maximizar la autonomía.
+2. **🌩️ Clima Real Sincronizado:**
+   - Consulta meteorológica ultraligera en tiempo real con Open-Meteo (0 claves API).
+   - Lluvia y tormentas locales intensifican los relámpagos carmesíes sobre Barad-dûr y espesan la bruma de ceniza.
+3. **🔔 Notificaciones Temáticas de Mordor:**
+   - Alertas nativas de escritorio ante batería crítica (< 15%) y almacenamiento en disco saturado (> 90%), con títulos e iconografía de Sauron y Barad-dûr.
+4. **🎨 Paleta Oficial para Terminal Ptyxis y VS Code:**
+   - Paleta de colores `Mordor.palette` para el terminal por defecto de GNOME (Ptyxis).
+   - Extensión oficial para Visual Studio Code con tema oscuro de obsidiana y rojo lava (`mordor-theme-1.0.0`).
 
 ---
 

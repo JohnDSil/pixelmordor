@@ -29,6 +29,16 @@ if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface accent-color 'red' || true
 fi
 
+# 2b. Configurar paleta de terminal Ptyxis
+if [ -f "$AQUI/Mordor.palette" ]; then
+    mkdir -p "$HOME/.local/share/org.gnome.Ptyxis/palettes"
+    cp "$AQUI/Mordor.palette" "$HOME/.local/share/org.gnome.Ptyxis/palettes/"
+    prof_uuid=$(gsettings get org.gnome.Ptyxis default-profile-uuid 2>/dev/null | tr -d "'" || true)
+    if [ -n "$prof_uuid" ]; then
+        gsettings set "org.gnome.Ptyxis.Profile:$prof_uuid" palette 'Mordor' 2>/dev/null || true
+    fi
+fi
+
 # 3. Actualizar la extensión de GNOME con las capas animadas y el HUD
 UUID="pixelzen@mosqui1988.github.io"
 EXT_DIR="$HOME/.local/share/gnome-shell/extensions/$UUID"

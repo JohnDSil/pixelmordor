@@ -52,6 +52,12 @@ export default class PixelZenExtension extends Extension {
             return GLib.SOURCE_CONTINUE;
         });
 
+        // Notificaciones Temáticas de Mordor
+        this.alertasActivas = true;
+        this._ultimaAlertaBateria = 0;
+        this._ultimaAlertaDisco = 0;
+        this._iniciaAlertas();
+
         const con = (obj, sig, fn) => this._ids.push([obj, obj.connect(sig, fn)]);
         con(Main.layoutManager, 'monitors-changed', () => this._construye());
         con(global.display, 'workareas-changed', () => this._colocaHud());
@@ -129,6 +135,27 @@ export default class PixelZenExtension extends Extension {
                 }
             });
             menu.addMenuItem(itemRunas);
+
+            // Alternar Ahorro Inteligente de Batería
+            const itemAhorro = new PopupMenu.PopupSwitchMenuItem('🔋 Ahorro Inteligente de Batería', false);
+            itemAhorro.connect('toggled', (item, state) => {
+                this._escena?.setModoAhorro(state);
+            });
+            menu.addMenuItem(itemAhorro);
+
+            // Alternar Clima Real Sincronizado
+            const itemClima = new PopupMenu.PopupSwitchMenuItem('🌩️ Clima Real Sincronizado', true);
+            itemClima.connect('toggled', (item, state) => {
+                this._escena?.setClimaReal(state);
+            });
+            menu.addMenuItem(itemClima);
+
+            // Alternar Alertas Temáticas de Mordor
+            const itemNotif = new PopupMenu.PopupSwitchMenuItem('🔔 Alertas Temáticas de Mordor', true);
+            itemNotif.connect('toggled', (item, state) => {
+                this.alertasActivas = state;
+            });
+            menu.addMenuItem(itemNotif);
 
             menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -210,6 +237,16 @@ export default class PixelZenExtension extends Extension {
             });
             menu.addMenuItem(itemDemo);
 
+            menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+            const itemPaleta = new PopupMenu.PopupMenuItem('🎨 Activar Paleta Mordor en Terminal');
+            itemPaleta.connect('activate', () => {
+                try {
+                    Gio.Subprocess.new(['/bin/bash', '-c', 'mordor terminal'], Gio.SubprocessFlags.NONE);
+                } catch (e) {}
+            });
+            menu.addMenuItem(itemPaleta);
+
             Main.panel.addToStatusArea('pixelzen-hud-toggle', this._btnPanel, 1, 'right');
         } catch (e) {
             logError(e, 'PixelZen Mordor: error al crear boton en panel');
@@ -270,11 +307,81 @@ export default class PixelZenExtension extends Extension {
         } catch (e) {}
     }
 
+    _iniciaAlertas() {
+        this._timerAlertas = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 45, () => {
+            if (this.alertasActivas) this._compruebaAlertasMordor();
+            return GLib.SOURCE_CONTINUE;
+        });
+    }
+
+    _notifica(titulo, cuerpo) {
+        try {
+            Gio.Subprocess.new(['notify-send', '-a', 'Mordor (LOTR)', '-i', `${this.path}/images/escena-dorado.png`, titulo, cuerpo],
+                Gio.SubprocessFlags.NONE);
+        } catch (e) {
+            try {
+                Main.notify(titulo, cuerpo);
+            } catch (err) {}
+        }
+    }
+
+    _compruebaAlertasMordor() {
+        const ahora = Date.now();
+        // 1. Alerta de Batería Crítica (< 15% descargando)
+        try {
+            const f = Gio.File.new_for_path('/sys/class/power_supply');
+            if (f.query_exists(null)) {
+                const en = f.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
+                let info;
+                while ((info = en.next_file(null)) !== null) {
+                    const nombre = info.get_name();
+                    if (nombre.startsWith('BAT')) {
+                        const statusFile = Gio.File.new_for_path(`/sys/class/power_supply/${nombre}/status`);
+                        const capFile = Gio.File.new_for_path(`/sys/class/power_supply/${nombre}/capacity`);
+                        if (statusFile.query_exists(null) && capFile.query_exists(null)) {
+                            const [, stBytes] = statusFile.load_contents(null);
+                            const [, capBytes] = capFile.load_contents(null);
+                            const st = new TextDecoder().decode(stBytes).trim();
+                            const cap = parseInt(new TextDecoder().decode(capBytes).trim(), 10);
+                            if (st === 'Discharging' && cap <= 15 && ahora - this._ultimaAlertaBateria > 300000) {
+                                this._ultimaAlertaBateria = ahora;
+                                this._notifica('⚡ La Llama de Orodruin Vacila', `La batería de tu máquina cae al ${cap}%. Conecta el orbe de poder o las sombras te consumirán.`);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        } catch (e) {}
+
+        // 2. Alerta de Espacio en Disco Crítico (> 90%)
+        if (ahora - this._ultimaAlertaDisco > 600000) {
+            try {
+                const p = Gio.Subprocess.new(['df', '-h', '/'], Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_SILENCE);
+                p.communicate_utf8_async(null, null, (proc, res) => {
+                    try {
+                        const [, out] = proc.communicate_utf8_finish(res);
+                        const match = out.match(/(\d+)%/);
+                        if (match) {
+                            const uso = parseInt(match[1], 10);
+                            if (uso >= 90) {
+                                this._ultimaAlertaDisco = ahora;
+                                this._notifica('🌋 Bóvedas de Barad-dûr Desbordadas', `El almacenamiento del disco raíz está al ${uso}%. Purga los archivos innecesarios.`);
+                            }
+                        }
+                    } catch (e) {}
+                });
+            } catch (e) {}
+        }
+    }
+
     disable() {
         for (const [obj, id] of this._ids) obj.disconnect(id);
         this._ids = [];
         if (this._timerUbi) GLib.source_remove(this._timerUbi);
         this._timerUbi = 0;
+        if (this._timerAlertas) GLib.source_remove(this._timerAlertas);
+        this._timerAlertas = 0;
         this._btnPanel?.destroy();
         this._hud?.destroy();
         this._escena?.destroy();

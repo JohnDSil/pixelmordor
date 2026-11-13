@@ -112,6 +112,44 @@ case "${1:-info}" in
             echo -e "\033[1;32m📊 Panel HUD visible.\033[0m"
         fi
         ;;
+    clima)
+        CLIMA_SCRIPT="$HOME/.local/share/gnome-shell/extensions/$UUID/code/clima.py"
+        if [ ! -f "$CLIMA_SCRIPT" ]; then
+            CLIMA_SCRIPT="$(dirname "$0")/gnome/$UUID/code/clima.py"
+        fi
+        if [ -f "$CLIMA_SCRIPT" ]; then
+            res=$(python3 -I "$CLIMA_SCRIPT" 2>/dev/null || echo '{"ok":false}')
+            desc=$(echo "$res" | grep -oP '"desc":\s*"\K[^"]+' || echo "Atmósfera de Mordor")
+            temp=$(echo "$res" | grep -oP '"temp":\s*\K-?[0-9]+' || echo "15")
+            wind=$(echo "$res" | grep -oP '"wind":\s*\K[0-9]+' || echo "10")
+            echo -e "\033[1;31m🌩️ Clima sincronizado en Gorgoroth / Barad-dûr:\033[0m"
+            echo "  • Condición: $desc"
+            echo "  • Temperatura: ${temp}°C"
+            echo "  • Viento: ${wind} km/h"
+        else
+            echo "Script de clima no encontrado."
+        fi
+        ;;
+    terminal)
+        PTYXIS_DIR="$HOME/.local/share/org.gnome.Ptyxis/palettes"
+        mkdir -p "$PTYXIS_DIR"
+        PALETA_SRC="$(dirname "$0")/Mordor.palette"
+        if [ -f "$PALETA_SRC" ]; then
+            cp "$PALETA_SRC" "$PTYXIS_DIR/Mordor.palette"
+        fi
+        prof_uuid=$(gsettings get org.gnome.Ptyxis default-profile-uuid 2>/dev/null | tr -d "'" || true)
+        if [ -n "$prof_uuid" ]; then
+            gsettings set "org.gnome.Ptyxis.Profile:$prof_uuid" palette 'Mordor' 2>/dev/null || true
+            echo -e "\033[1;31m🎨 Paleta oficial de Mordor (rojo lava / obsidiana) aplicada al terminal Ptyxis.\033[0m"
+        else
+            echo "Perfil de Ptyxis no detectado, paleta instalada en $PTYXIS_DIR/Mordor.palette."
+        fi
+        ;;
+    notif)
+        suena sauron
+        notify-send -a "Mordor (LOTR)" -i "$HOME/.local/share/gnome-shell/extensions/$UUID/images/escena-dorado.png" "👁 El Gran Ojo de Sauron" "¡Las sombras de Mordor se alzan! Todas las fuerzas están preparadas." 2>/dev/null || true
+        echo -e "\033[1;31m🔔 Notificación de prueba de Sauron enviada al escritorio.\033[0m"
+        ;;
     estado)
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
         echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
@@ -179,5 +217,8 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  mordor cita      -> Proclamar cita del Anillo Único"
         echo "  mordor cursor    -> Aplicar cursor temático de Mordor"
         echo "  mordor hud       -> Alternar visibilidad del panel HUD"
+        echo "  mordor clima     -> Consultar clima real sincronizado con Open-Meteo"
+        echo "  mordor terminal  -> Aplicar paleta de colores de Mordor a Ptyxis"
+        echo "  mordor notif     -> Enviar notificación de prueba del Ojo de Sauron"
         ;;
 esac
