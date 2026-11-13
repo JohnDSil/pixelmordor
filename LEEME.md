@@ -1,5 +1,10 @@
 # PixelMordor
 
+[![Demo en Vivo](https://img.shields.io/badge/Web_Interactiva-Live_Demo-ef4444?style=for-the-badge&logo=firefox-browser&logoColor=white)](https://johndsil.github.io/pixelmordor/)
+[![GNOME Shell](https://img.shields.io/badge/GNOME_Shell-45_%7C_46_%7C_47-f59e0b?style=for-the-badge&logo=gnome&logoColor=white)](https://extensions.gnome.org/)
+[![GTK4 Libadwaita](https://img.shields.io/badge/GTK4-Libadwaita-dc2626?style=for-the-badge&logo=gtk&logoColor=white)](gnome/gtk/mordor-gtk.css)
+[![Licencia GPL v3](https://img.shields.io/badge/Licencia-GPL_v3-22c55e?style=for-the-badge)](LICENSE)
+
 > Tema de escritorio para **GNOME Shell y Linux** en pixel art: paisaje volcánico animado de **Mordor (El Señor de los Anillos)** que sigue la trayectoria solar real de tu ciudad, panel de datos interactivo (HUD), síntesis de audio sin dependencias, cursores temáticos y herramientas de control.
 
 ![PixelMordor de noche y crepúsculo: Barad-dûr, el Monte del Destino y el Gran Ojo](capturas/preview_mordor_definitivo.png)
