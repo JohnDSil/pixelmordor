@@ -46,9 +46,10 @@ if [ -d "$AQUI/gnome/sound-theme/mordor" ]; then
     gsettings set org.gnome.desktop.sound event-sounds true 2>/dev/null || true
 fi
 
-# Instalar prompt temático para Bash
+# Instalar prompt temático y MOTD para Bash
 mkdir -p "$HOME/.config/pixelzen"
 [ -f "$AQUI/src/mordor_prompt.sh" ] && cp "$AQUI/src/mordor_prompt.sh" "$HOME/.config/pixelzen/"
+[ -f "$AQUI/src/mordor_motd.sh" ] && cp "$AQUI/src/mordor_motd.sh" "$HOME/.config/pixelzen/" && chmod +x "$HOME/.config/pixelzen/mordor_motd.sh"
 
 # Generar fondo de pantalla de bloqueo si no existe
 if [ ! -f "$AQUI/fondos/mordor-bloqueo.png" ] && [ -f "$AQUI/src/construir_bloqueo.py" ]; then
@@ -62,7 +63,7 @@ cp "$AQUI/mordor" "$HOME/.local/bin/mordor"
 chmod +x "$HOME/.local/bin/mordor"
 
 if [ -f "$HOME/.bashrc" ] && ! grep -q "complete -W .*mordor" "$HOME/.bashrc"; then
-    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar gtk atajos info" mordor' >> "$HOME/.bashrc"
+    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo prompt sonido forjar gtk atajos grub resolucion fondo motd info" mordor' >> "$HOME/.bashrc"
 fi
 
 # 4. Desplegar extensión para GNOME Shell y temas GTK

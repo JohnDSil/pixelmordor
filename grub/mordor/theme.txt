@@ -1,0 +1,58 @@
+# ====================================================================
+# GRUB 2 Theme: PixelMordor
+# El Señor de los Anillos: La Tierra Oscura
+# ====================================================================
+
+title-text: "TIERRA DE MORDOR  ·  EL SEÑOR DE LOS ANILLOS"
+title-font: "mordor_title_24"
+title-color: "#f59e0b"
+
+message-font: "mordor_16"
+message-color: "#ef4444"
+message-bg-color: "#0d0308"
+
+desktop-image: "background.png"
+desktop-color: "#070205"
+
+terminal-box: "select_*.png"
+terminal-font: "mordor_16"
+
++ boot_menu {
+    left = 22%
+    top = 32%
+    width = 56%
+    height = 50%
+    item_font = "mordor_16"
+    item_color = "#e6dedc"
+    selected_item_color = "#fef08a"
+    selected_item_pixmap_style = "select_*.png"
+    icon_height = 32
+    icon_width = 32
+    item_height = 42
+    item_padding = 10
+    item_spacing = 12
+}
+
++ progress_bar {
+    id = "__timeout__"
+    left = 25%
+    top = 86%
+    width = 50%
+    height = 16
+    show_text = true
+    font = "mordor_16"
+    text_color = "#f59e0b"
+    align = "center"
+    bar_style = "progress_bar_*.png"
+    highlight_style = "progress_hl_*.png"
+}
+
++ label {
+    top = 92%
+    left = 25%
+    width = 50%
+    align = "center"
+    font = "mordor_16"
+    text = "« Ash nazg durbatulûk, ash nazg gimbatul »"
+    color = "#b91c1c"
+}

@@ -325,6 +325,133 @@ else:
     print('   • \033[1;33mSuper + Alt + F\033[0m -> Forja interactiva del Anillo Único (Ptyxis)')
 "
         ;;
+    grub)
+        sub="${2:-estado}"
+        GRUB_SCRIPT=""
+        for cand in \
+            "$(dirname "$0")/grub/instalar_grub.sh" \
+            "$(dirname "$0")/../grub/instalar_grub.sh" \
+            "$HOME/Descargas/pixelmordor/grub/instalar_grub.sh" \
+            "$HOME/Descargas/mordor/grub/instalar_grub.sh"; do
+            if [ -f "$cand" ]; then
+                GRUB_SCRIPT="$cand"
+                break
+            fi
+        done
+
+        if [ "$sub" = "on" ] || [ "$sub" = "install" ] || [ "$sub" = "activar" ]; then
+            if [ -n "$GRUB_SCRIPT" ]; then
+                echo -e "\033[1;33m==> Instalando tema de arranque GRUB 2 de Mordor (requiere sudo)...\033[0m"
+                sudo "$GRUB_SCRIPT"
+            else
+                echo -e "\033[1;31mError:\033[0m Script instalar_grub.sh no encontrado."
+            fi
+        elif [ "$sub" = "off" ] || [ "$sub" = "remove" ] || [ "$sub" = "desactivar" ]; then
+            DES_GRUB="$(dirname "$GRUB_SCRIPT")/desinstalar_grub.sh"
+            if [ -f "$DES_GRUB" ]; then
+                echo -e "\033[1;33m==> Desinstalando tema GRUB 2 de Mordor (requiere sudo)...\033[0m"
+                sudo "$DES_GRUB"
+            else
+                sudo sed -i '/^GRUB_THEME=/d' /etc/default/grub && sudo update-grub
+            fi
+        else
+            echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
+            echo -e "\033[1;37m        TEMA DE ARRANQUE GRUB 2 · TIERRA DE MORDOR         \033[0m"
+            echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
+            if grep -q "themes/mordor" /etc/default/grub 2>/dev/null; then
+                echo -e "  • Estado: \033[1;32mACTIVO (/boot/grub/themes/mordor)\033[0m"
+            else
+                echo -e "  • Estado: \033[1;30mINACTIVO\033[0m"
+            fi
+            echo "  • Fondo: El Morannon & Barad-dûr (1920x1080 Full HD)"
+            echo "  • Fuentes: Tipografía rúnica Departure Mono (16px y 24px en .pf2)"
+            echo "  • Selector: Marco obsidiana con resplandor de lava y magma"
+            echo "  • Uso:"
+            echo "      mordor grub on   -> Instalar tema en /boot/grub/themes y activar"
+            echo "      mordor grub off  -> Desactivar y restaurar GRUB por defecto"
+            echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
+        fi
+        ;;
+    resolucion|fondo)
+        sub="${2:-auto}"
+        FONDOS_PATH=""
+        for cand in \
+            "$(dirname "$0")/fondos" \
+            "$(dirname "$0")/../fondos" \
+            "$HOME/Descargas/pixelmordor/fondos" \
+            "$HOME/Descargas/mordor/fondos"; do
+            if [ -d "$cand" ]; then
+                FONDOS_PATH="$cand"
+                break
+            fi
+        done
+
+        if [ "$sub" = "compilar" ]; then
+            python3 "$HOME/Descargas/pixelmordor/src/construir_resoluciones.py"
+        else
+            # Determinar resolucion
+            TARGET_RES="$sub"
+            if [ "$sub" = "auto" ]; then
+                # Intentar detectar resolucion activa
+                det_w=$(xrandr 2>/dev/null | grep '\*' | awk '{print $1}' | cut -d'x' -f1 | head -n1 || echo "")
+                if [ -z "$det_w" ]; then
+                    det_w=1920
+                fi
+                if [ "$det_w" -ge 3400 ]; then
+                    TARGET_RES="ultrawide"
+                elif [ "$det_w" -ge 3800 ]; then
+                    TARGET_RES="4k"
+                elif [ "$det_w" -ge 2500 ]; then
+                    TARGET_RES="2k"
+                else
+                    TARGET_RES="1080p"
+                fi
+            fi
+
+            # Buscar fondo de noche o dia
+            f_cand="$FONDOS_PATH/mordor-noche-${TARGET_RES}.png"
+            if [ ! -f "$f_cand" ]; then
+                f_cand="$FONDOS_PATH/mordor-noche.png"
+            fi
+
+            mkdir -p "$HOME/.local/share/backgrounds"
+            cp "$f_cand" "$HOME/.local/share/backgrounds/mordor.png"
+            URI="file://$HOME/.local/share/backgrounds/mordor.png"
+            gsettings set org.gnome.desktop.background picture-uri "$URI" 2>/dev/null || true
+            gsettings set org.gnome.desktop.background picture-uri-dark "$URI" 2>/dev/null || true
+            echo -e "\033[1;32m🖼️ Fondo de pantalla adaptado a resolución [$TARGET_RES] aplicado con éxito.\033[0m"
+            echo "   Archivo: $f_cand"
+        fi
+        ;;
+    motd)
+        sub="${2:-probar}"
+        MOTD_SH="$HOME/.config/pixelzen/mordor_motd.sh"
+        [ -f "$MOTD_SH" ] || MOTD_SH="$(dirname "$0")/src/mordor_motd.sh"
+        [ -f "$MOTD_SH" ] || MOTD_SH="$HOME/Descargas/pixelmordor/src/mordor_motd.sh"
+
+        if [ "$sub" = "on" ] || [ "$sub" = "activar" ]; then
+            mkdir -p "$HOME/.config/pixelzen"
+            if [ -f "$MOTD_SH" ] && [ "$MOTD_SH" != "$HOME/.config/pixelzen/mordor_motd.sh" ]; then
+                cp "$MOTD_SH" "$HOME/.config/pixelzen/mordor_motd.sh"
+            fi
+            chmod +x "$HOME/.config/pixelzen/mordor_motd.sh" 2>/dev/null || true
+            if [ -f "$HOME/.bashrc" ] && ! grep -q "mordor_motd.sh" "$HOME/.bashrc"; then
+                echo '[ -f "$HOME/.config/pixelzen/mordor_motd.sh" ] && "$HOME/.config/pixelzen/mordor_motd.sh"' >> "$HOME/.bashrc"
+            fi
+            echo -e "\033[1;32m📜 Cita diaria de Tolkien (MOTD) ACTIVADA al abrir cada nueva terminal.\033[0m"
+        elif [ "$sub" = "off" ] || [ "$sub" = "desactivar" ]; then
+            if [ -f "$HOME/.bashrc" ]; then
+                sed -i '/mordor_motd\.sh/d' "$HOME/.bashrc"
+            fi
+            echo -e "\033[1;30m📜 Cita diaria de Tolkien (MOTD) desactivada en ~/.bashrc.\033[0m"
+        else
+            if [ -f "$MOTD_SH" ]; then
+                bash "$MOTD_SH"
+            else
+                echo -e "\033[1;31mError:\033[0m mordor_motd.sh no encontrado."
+            fi
+        fi
+        ;;
     estado)
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
         echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
@@ -356,6 +483,12 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  • Tema GTK/Libadwaita: $gtk_st"
         keys_count=$(python3 -c "from gi.repository import Gio; s=Gio.Settings(schema='org.gnome.settings-daemon.plugins.media-keys'); print(len([p for p in s.get_strv('custom-keybindings') if '/mordor-' in p]))" 2>/dev/null || echo 0)
         echo "  • Atajos Globales: $keys_count configurados (Super+Alt+{E,S,N,B,F})"
+        grub_st="Inactivo"
+        grep -q "themes/mordor" /etc/default/grub 2>/dev/null && grub_st="Activo (/boot/grub/themes/mordor)"
+        echo "  • Tema de Arranque GRUB 2: $grub_st"
+        motd_st="Inactivo"
+        grep -q "mordor_motd.sh" "$HOME/.bashrc" 2>/dev/null && motd_st="Activo (Citas al abrir terminal)"
+        echo "  • Citas MOTD de Terminal: $motd_st"
         echo "  • Carga CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2}')% usuario"
         echo "  • Memoria RAM: $(free -h | awk '/Mem:/ {print $3 " / " $2}')"
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
@@ -406,5 +539,8 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  mordor forjar    -> Animación interactiva de la Forja del Anillo Único"
         echo "  mordor gtk       -> Activar/desactivar tema GTK4/Libadwaita y GTK3 [on|off]"
         echo "  mordor atajos    -> Activar/desactivar atajos de teclado globales GNOME [on|off]"
+        echo "  mordor grub      -> Configurar tema de arranque GRUB 2 de Mordor [on|off]"
+        echo "  mordor fondo     -> Aplicar fondo por resolución [1080p|2k|4k|ultrawide]"
+        echo "  mordor motd      -> Alternar cita de Tolkien al abrir nueva terminal [on|off]"
         ;;
 esac

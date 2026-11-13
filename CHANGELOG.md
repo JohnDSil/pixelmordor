@@ -8,6 +8,16 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 ## [1.5.0] - 2026-11-13
 
 ### Añadido
+- **🚀 Tema de Arranque GRUB 2 (`mordor grub [on|off]`):**
+  - Pantalla de inicio de sistema en `grub/mordor/` con arte Full HD (1920x1080) de El Morannon y Barad-dûr.
+  - Fuentes rúnicas `mordor_16.pf2` y `mordor_title_24.pf2`, marco selector en obsidiana y lava, barra de cuenta regresiva e iconos de sistemas operativos.
+  - Scripts dedicados `grub/instalar_grub.sh` y `grub/desinstalar_grub.sh`.
+- **🖼️ Fondos Multi-Resolución 2K, 4K y Ultrawide 21:9 (`mordor fondo`):**
+  - Generador paramétrico en `src/construir_resoluciones.py` con aspect ratio adaptativo.
+  - Generación nativa para 1080p (1920x1080), 2K QHD (2560x1440), 4K UHD (3840x2160) y Ultrawide 21:9 (3440x1440 y 2560x1080) en las tres fases solares.
+- **📜 Citas de Tolkien al Abrir Terminal MOTD (`mordor motd [on|off]`):**
+  - Módulo ultraligero (< 1ms) en `src/mordor_motd.sh` con 15 citas de El Señor de los Anillos en castellano y Lengua Negra de Mordor.
+  - Interruptor directo para integrar o desintegrar de `~/.bashrc`.
 - **🎨 Tema GTK4 / Libadwaita y GTK3 (`mordor gtk [on|off]`):**
   - Estilos volcánicos en `gnome/gtk/mordor-gtk.css` integrados con `~/.config/gtk-4.0/gtk.css` y `~/.config/gtk-3.0/gtk.css`.
   - Ventanas obsidiana (`#0d0308`), acentos carmesí de Libadwaita (`#ef4444`, `#dc2626`), barras de scroll con brillo de lava y botones sugeridos en gradiente ígneo.

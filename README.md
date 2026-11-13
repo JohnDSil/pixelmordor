@@ -129,6 +129,9 @@ mordor sonido    # Alternar tema de sonido XDG para eventos de sistema
 mordor forjar    # Animación interactiva de la Forja del Anillo Único
 mordor gtk       # Activar o desactivar tema GTK4/Libadwaita y GTK3 [on|off]
 mordor atajos    # Activar o desactivar atajos globales GNOME [on|off]
+mordor grub      # Instalar o gestionar tema de arranque GRUB 2 [on|off]
+mordor fondo     # Aplicar fondos multi-resolución [1080p|2k|4k|ultrawide]
+mordor motd      # Alternar cita de Tolkien al abrir terminal [on|off]
 ```
 
 ---
@@ -177,6 +180,12 @@ mordor atajos    # Activar o desactivar atajos globales GNOME [on|off]
 12. **🌐 Sitio Web Interactivo y GitHub Pages (`docs/index.html`):**
     - Landing page con HTML5 Canvas en tiempo real: Orodruin en erupción, Ojo de Sauron con pupila que sigue al ratón, Nazgûl en vuelo, sintetizador de audio puro con Web Audio API (cero dependencias externas) y simulador de terminal interactivo.
     - Publicable de inmediato en GitHub Pages en `https://johndsil.github.io/pixelmordor/`.
+13. **🚀 Tema de Arranque GRUB 2 (`mordor grub [on|off]`):**
+    - Pantalla de inicio de sistema en Full HD (1920x1080) con El Morannon y Barad-dûr, tipografía rúnica Departure Mono, selector en obsidiana y lava, e iconos temáticos de sistemas operativos.
+14. **🖼️ Fondos Multi-Resolución 2K, 4K y Ultrawide 21:9 (`mordor fondo`):**
+    - Generación paramétrica y libre de deformaciones para 1080p, 1440p 2K QHD, 2160p 4K UHD y panorámicos 21:9 (3440x1440 y 2560x1080).
+15. **📜 Citas de Tolkien al Abrir Terminal MOTD (`mordor motd [on|off]`):**
+    - Mensaje de bienvenida diario con 15 citas de El Señor de los Anillos en castellano y Lengua Negra de Mordor mostrado al instante (< 1ms).
 
 ---
 

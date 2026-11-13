@@ -767,6 +767,36 @@
         </p>
         <span class="badge-code">mordor bloqueo lock</span>
       </div>
+
+      <!-- Card 7: GRUB Theme -->
+      <div class="card">
+        <span class="card-icon">🚀</span>
+        <h3>Tema de Arranque GRUB 2</h3>
+        <p>
+          Inicia tu equipo contemplando El Morannon y Barad-dûr en 1080p Full HD con tipografía rúnica Departure Mono, selector en obsidiana/lava y barra de cuenta regresiva.
+        </p>
+        <span class="badge-code">mordor grub [on|off]</span>
+      </div>
+
+      <!-- Card 8: Multi-Resolution -->
+      <div class="card">
+        <span class="card-icon">🖼️</span>
+        <h3>Soporte 2K, 4K y Ultrawide 21:9</h3>
+        <p>
+          Generador de fondos de pantalla pixel-perfect adaptados a la geometría de tu monitor: 1080p, 1440p QHD, 2160p 4K y panorámicos 21:9 (3440x1440 y 2560x1080).
+        </p>
+        <span class="badge-code">mordor fondo [1080p|2k|4k|ultrawide]</span>
+      </div>
+
+      <!-- Card 9: MOTD Quotes -->
+      <div class="card">
+        <span class="card-icon">📜</span>
+        <h3>Citas de Tolkien al Abrir Terminal</h3>
+        <p>
+          Cada nueva ventana de terminal te recibe con una cita mística aleatoria de El Señor de los Anillos enmarcada en caracteres de fuego en menos de 1 milisegundo.
+        </p>
+        <span class="badge-code">mordor motd [on|off]</span>
+      </div>
     </div>
   </section>
 
@@ -797,6 +827,9 @@
         <button class="cmd-chip" onclick="runSimCmd('mordor atajos')">mordor atajos</button>
         <button class="cmd-chip" onclick="runSimCmd('mordor gtk on')">mordor gtk on</button>
         <button class="cmd-chip" onclick="runSimCmd('mordor forjar')">mordor forjar</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor grub')">mordor grub</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor motd')">mordor motd</button>
+        <button class="cmd-chip" onclick="runSimCmd('mordor fondo 4k')">mordor fondo 4k</button>
       </div>
       <div class="terminal-body" id="term-output">
 <span class="term-accent">👁  TIERRA DE MORDOR</span> · <span class="term-gold">El Señor de los Anillos</span> <span style="color: #6b7280;">(escribe 'mordor info' o haz clic en los botones)</span>
@@ -1472,7 +1505,22 @@ Onda expansiva sísmica propagada por Barad-dûr.`,
          \\ \\  \\ /  / /     En las grietas del Orodruin...
           '-\\  '  /-'
              '---'
-   ¡El Anillo Único ha sido completado con fuego del Monte del Destino!`
+   ¡El Anillo Único ha sido completado con fuego del Monte del Destino!`,
+      'mordor grub': `═══════════════════════════════════════════════════════════
+        TEMA DE ARRANQUE GRUB 2 · TIERRA DE MORDOR         
+═══════════════════════════════════════════════════════════
+  • Estado: ACTIVO (/boot/grub/themes/mordor)
+  • Fondo: El Morannon & Barad-dûr (1920x1080 Full HD)
+  • Fuentes: Tipografía rúnica Departure Mono (.pf2)
+  • Selector: Marco obsidiana con resplandor de lava y magma`,
+      'mordor motd': `  ╔═════════════════════════════════════════════════════════════════════════╗
+   👁  PALABRAS DE MORDOR · EL SEÑOR DE LOS ANILLOS
+   « No puedes esconderte. ¡Te veo!
+    No hay vida en el vacío... solo muerte. »
+   — El Gran Ojo de Barad-dûr
+  ╚═════════════════════════════════════════════════════════════════════════╝`,
+      'mordor fondo 4k': `🖼️ Fondo de pantalla adaptado a resolución [4k UHD: 3840x2160] aplicado con éxito.
+   Archivo: ~/.local/share/backgrounds/mordor.png`
     };
 
     function runSimCmd(cmd) {
