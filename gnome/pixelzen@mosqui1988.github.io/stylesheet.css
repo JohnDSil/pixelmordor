@@ -43,3 +43,57 @@
     height: 1px !important;
     margin: 4px 8px !important;
 }
+
+/* Pantalla de Bloqueo de Mordor (El Morannon) */
+.unlock-dialog {
+    background-color: transparent !important;
+}
+
+#lockDialogGroup {
+    background-color: rgba(5, 2, 8, 0.40) !important;
+}
+
+.unlock-dialog-clock {
+    spacing: 8px !important;
+}
+
+.unlock-dialog-clock-time {
+    font-family: 'Departure Mono', 'Pixelify Sans', monospace !important;
+    font-size: 56pt !important;
+    font-weight: bold !important;
+    color: #fbbf24 !important;
+    text-shadow: 0 0 16px rgba(239, 68, 68, 0.95) !important;
+}
+
+.unlock-dialog-clock-date {
+    font-family: 'Departure Mono', 'Pixelify Sans', monospace !important;
+    font-size: 13pt !important;
+    color: #ef4444 !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 8px rgba(185, 28, 28, 0.8) !important;
+}
+
+.unlock-dialog-clock-hint {
+    font-family: 'Departure Mono', 'Pixelify Sans', monospace !important;
+    color: #f97316 !important;
+    font-size: 10pt !important;
+}
+
+.unlock-dialog StEntry {
+    background-color: rgba(14, 5, 9, 0.92) !important;
+    border: 1px solid #dc2626 !important;
+    border-radius: 8px !important;
+    color: #fbbf24 !important;
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.45) !important;
+}
+
+.unlock-dialog StEntry:focus {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.7) !important;
+}
+
+.unlock-dialog .login-dialog-prompt-label {
+    color: #ef4444 !important;
+    font-family: 'Departure Mono', monospace !important;
+    font-weight: bold !important;
+}

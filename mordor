@@ -150,6 +150,25 @@ case "${1:-info}" in
         notify-send -a "Mordor (LOTR)" -i "$HOME/.local/share/gnome-shell/extensions/$UUID/images/escena-dorado.png" "👁 El Gran Ojo de Sauron" "¡Las sombras de Mordor se alzan! Todas las fuerzas están preparadas." 2>/dev/null || true
         echo -e "\033[1;31m🔔 Notificación de prueba de Sauron enviada al escritorio.\033[0m"
         ;;
+    bloqueo)
+        sub="${2:-aplicar}"
+        BG_SRC="$HOME/.local/share/backgrounds/mordor-bloqueo.png"
+        if [ ! -f "$BG_SRC" ]; then
+            BG_SRC="$(dirname "$0")/fondos/mordor-bloqueo.png"
+            mkdir -p "$HOME/.local/share/backgrounds"
+            [ -f "$BG_SRC" ] && cp "$BG_SRC" "$HOME/.local/share/backgrounds/mordor-bloqueo.png"
+        fi
+        gsettings set org.gnome.desktop.screensaver picture-uri "file://$HOME/.local/share/backgrounds/mordor-bloqueo.png" 2>/dev/null || true
+        gsettings set org.gnome.desktop.screensaver picture-options 'zoom' 2>/dev/null || true
+        gsettings set org.gnome.desktop.screensaver primary-color '#050208' 2>/dev/null || true
+        gsettings set org.gnome.desktop.screensaver secondary-color '#050208' 2>/dev/null || true
+        echo -e "\033[1;31m🔒 Pantalla de bloqueo de Mordor (El Morannon y el Gran Ojo) configurada.\033[0m"
+        if [ "$sub" = "test" ] || [ "$sub" = "lock" ]; then
+            suena sauron
+            sleep 0.5
+            busctl --user call org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver Lock 2>/dev/null || true
+        fi
+        ;;
     estado)
         echo -e "\033[1;31m═══════════════════════════════════════════════════════════\033[0m"
         echo -e "\033[1;37m        ESTADO DEL REINO DE MORDOR (LOTR PIXELZEN)        \033[0m"
@@ -220,5 +239,6 @@ print(f'  • Coordenadas: Madrid ({lat}°N, {abs(lon)}°O)')
         echo "  mordor clima     -> Consultar clima real sincronizado con Open-Meteo"
         echo "  mordor terminal  -> Aplicar paleta de colores de Mordor a Ptyxis"
         echo "  mordor notif     -> Enviar notificación de prueba del Ojo de Sauron"
+        echo "  mordor bloqueo   -> Configurar fondo y estilos de pantalla de bloqueo"
         ;;
 esac

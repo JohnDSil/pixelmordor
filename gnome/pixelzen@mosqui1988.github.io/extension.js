@@ -247,6 +247,19 @@ export default class PixelZenExtension extends Extension {
             });
             menu.addMenuItem(itemPaleta);
 
+            const itemBloqueo = new PopupMenu.PopupMenuItem('🔒 Bloquear Pantalla (El Morannon)');
+            itemBloqueo.connect('activate', () => {
+                try {
+                    Gio.Subprocess.new(['busctl', '--user', 'call', 'org.gnome.ScreenSaver', '/org/gnome/ScreenSaver', 'org.gnome.ScreenSaver', 'Lock'],
+                        Gio.SubprocessFlags.NONE);
+                } catch (e) {
+                    try {
+                        Main.screenShield?.lock(true);
+                    } catch (err) {}
+                }
+            });
+            menu.addMenuItem(itemBloqueo);
+
             Main.panel.addToStatusArea('pixelzen-hud-toggle', this._btnPanel, 1, 'right');
         } catch (e) {
             logError(e, 'PixelZen Mordor: error al crear boton en panel');

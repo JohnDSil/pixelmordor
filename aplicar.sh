@@ -20,11 +20,23 @@ mkdir -p "$HOME/.local/share/backgrounds"
 cp "$FONDO" "$HOME/.local/share/backgrounds/mordor.png"
 URI="file://$HOME/.local/share/backgrounds/mordor.png"
 
+# Fondo de pantalla de bloqueo dedicado (El Morannon y el Gran Ojo)
+FONDO_BLOQUEO="$AQUI/fondos/mordor-bloqueo.png"
+if [ -f "$FONDO_BLOQUEO" ]; then
+    cp "$FONDO_BLOQUEO" "$HOME/.local/share/backgrounds/mordor-bloqueo.png"
+    URI_BLOQUEO="file://$HOME/.local/share/backgrounds/mordor-bloqueo.png"
+else
+    URI_BLOQUEO="$URI"
+fi
+
 if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.background picture-uri "$URI" || true
     gsettings set org.gnome.desktop.background picture-uri-dark "$URI" || true
     gsettings set org.gnome.desktop.background picture-options zoom || true
-    gsettings set org.gnome.desktop.screensaver picture-uri "$URI" || true
+    gsettings set org.gnome.desktop.screensaver picture-uri "$URI_BLOQUEO" || true
+    gsettings set org.gnome.desktop.screensaver picture-options zoom || true
+    gsettings set org.gnome.desktop.screensaver primary-color '#050208' || true
+    gsettings set org.gnome.desktop.screensaver secondary-color '#050208' || true
     gsettings set org.gnome.desktop.interface cursor-theme 'MordorCursor' || true
     gsettings set org.gnome.desktop.interface accent-color 'red' || true
 fi

@@ -38,6 +38,11 @@ if [ -d "$AQUI/vscode" ]; then
     cp -r "$AQUI/vscode/"* "$HOME/.vscode/extensions/mordor-theme-1.0.0/" 2>/dev/null || true
 fi
 
+# Generar fondo de pantalla de bloqueo si no existe
+if [ ! -f "$AQUI/fondos/mordor-bloqueo.png" ] && [ -f "$AQUI/src/construir_bloqueo.py" ]; then
+    python3 "$AQUI/src/construir_bloqueo.py" >/dev/null 2>&1 || true
+fi
+
 # 3. Instalar herramienta de línea de comandos 'mordor'
 echo "==> 3/5 Instalando comando 'mordor' en ~/.local/bin..."
 mkdir -p "$HOME/.local/bin"
@@ -45,7 +50,7 @@ cp "$AQUI/mordor" "$HOME/.local/bin/mordor"
 chmod +x "$HOME/.local/bin/mordor"
 
 if [ -f "$HOME/.bashrc" ] && ! grep -q "complete -W .*mordor" "$HOME/.bashrc"; then
-    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud info" mordor' >> "$HOME/.bashrc"
+    echo 'complete -W "auto dia noche sangre ocaso demo erupcion colera nazgul hobbits ambiente cita estado banner cursor hud clima terminal notif bloqueo info" mordor' >> "$HOME/.bashrc"
 fi
 
 # 4. Desplegar extensión para GNOME Shell

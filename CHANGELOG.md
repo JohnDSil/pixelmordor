@@ -5,6 +5,18 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 
 ---
 
+## [1.3.0] - 2026-11-13
+
+### Añadido
+- **🔒 Pantalla de Bloqueo Personalizada de Mordor (El Morannon):**
+  - Fondo de pantalla exclusivo para la pantalla de bloqueo y screensaver (`fondos/mordor-bloqueo.png`, 1920x1200) representando la imponente **Puerta Negra de Mordor (*El Morannon*)**, las torres gemelas de los Dientes de Mordor (*Carchost y Narchost*) con antorchas encendidas, el Gran Ojo de Sauron proyectando su haz y el lema: *"NO PUEDES ESCONDERTE. ¡TE VEO!"*.
+  - Generador automatizado de arte en píxeles: `src/construir_bloqueo.py`.
+  - Estilizado de la pantalla de bloqueo de GNOME Shell en `stylesheet.css` (reloj gigante en oro élfico `#fbbf24`, fecha en carmesí `#ef4444` y caja de contraseña en obsidiana con borde de lava).
+  - Nuevo subcomando CLI: `mordor bloqueo` (y `mordor bloqueo lock` para bloquear al instante).
+  - Entrada añadida al menú superior de GNOME: `🔒 Bloquear Pantalla (El Morannon)`.
+
+---
+
 ## [1.2.0] - 2026-11-13
 
 ### Añadido

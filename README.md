@@ -116,6 +116,7 @@ mordor hud       # Alternar panel HUD
 mordor clima     # Consultar clima real sincronizado (Open-Meteo)
 mordor terminal  # Aplicar paleta oficial de Mordor a Ptyxis
 mordor notif     # Enviar notificación de prueba de Sauron
+mordor bloqueo   # Configurar o probar pantalla de bloqueo (Morannon)
 ```
 
 ---
@@ -133,6 +134,10 @@ mordor notif     # Enviar notificación de prueba de Sauron
 4. **🎨 Paleta Oficial para Terminal Ptyxis y VS Code:**
    - Paleta de colores `Mordor.palette` para el terminal por defecto de GNOME (Ptyxis).
    - Extensión oficial para Visual Studio Code con tema oscuro de obsidiana y rojo lava (`mordor-theme-1.0.0`).
+5. **🔒 Pantalla de Bloqueo Dedicada (El Morannon y el Gran Ojo):**
+   - Fondo de pantalla exclusivo para la pantalla de bloqueo (`fondos/mordor-bloqueo.png`) que representa la imponente silueta de la **Puerta Negra de Mordor (*Morannon*)**, las torres gemelas de los Dientes de Mordor (*Carchost y Narchost*) y el Gran Ojo de Sauron vigilando la sesión con el lema: *"NO PUEDES ESCONDERTE. ¡TE VEO!"*.
+   - Estilizado de GNOME Shell en `stylesheet.css` para el reloj y campo de contraseña con tipografía rúnica y resplandor de fuego.
+   - Opción en el menú superior de GNOME y comando CLI: `mordor bloqueo`.
 
 ---
 
