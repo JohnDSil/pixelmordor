@@ -269,17 +269,6 @@ def componer_escena_mordor(fase, fondo_completo=False):
                 if paso % 4 == 0:
                     draw.point((gx, gy - 1), fill=c_l3 + (255,))
 
-    # 6. BESTIA ALADA DE LOS NAZGÛL (FELL BEAST) EN VUELO
-    NX, NY = 110, 115
-    c_naz = (6, 2, 8, 255)
-    draw.polygon([(NX - 5, NY), (NX + 6, NY), (NX + 2, NY + 3), (NX - 4, NY + 2)], fill=c_naz)
-    draw.line([(NX - 4, NY), (NX - 10, NY - 4)], fill=c_naz, width=2) # cuello largo
-    draw.point((NX - 11, NY - 4), fill=c_naz) # cabeza con fauces
-    # Alas membranosas extendidas
-    draw.polygon([(NX - 2, NY), (NX - 16, NY - 14), (NX - 10, NY - 8)], fill=c_naz)
-    draw.polygon([(NX + 1, NY), (NX + 18, NY - 12), (NX + 10, NY - 7)], fill=c_naz)
-    draw.line([(NX + 4, NY + 2), (NX + 14, NY + 6)], fill=c_naz) # cola serpentina
-
     return img
 
 def genera_sol():

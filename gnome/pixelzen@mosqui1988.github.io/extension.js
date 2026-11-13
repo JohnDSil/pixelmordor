@@ -120,6 +120,16 @@ export default class PixelZenExtension extends Extension {
             });
             menu.addMenuItem(itemAmbiente);
 
+            // Alternar Runas del Anillo sobre Barad-dûr
+            const itemRunas = new PopupMenu.PopupSwitchMenuItem('📜 Runas sobre Barad-dûr', true);
+            itemRunas.connect('toggled', (item, state) => {
+                if (this._escena) {
+                    this._escena.runasTorre = state;
+                    this._escena.pinta();
+                }
+            });
+            menu.addMenuItem(itemRunas);
+
             menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
             // Acciones cinematográficas manuales

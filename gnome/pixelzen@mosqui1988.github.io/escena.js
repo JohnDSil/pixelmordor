@@ -105,10 +105,13 @@ export class Escena {
         this.relampagoManual = 0;
         this.sonidoActivo = true;
         this.lluviaCeniza = true;
+        this.runasTorre = true;
         this.ambienteActivo = false;
         this.ambienteTimer = 0;
         this.nazCurX = 140;
         this.nazCurY = 108;
+        this.naz2CurX = 370;
+        this.naz2CurY = 92;
         this.nazgulDive = 0;
 
         // Easter Egg: Frodo y Sam infiltrándose en Gorgoroth (Y=304)
@@ -184,8 +187,9 @@ export class Escena {
             return true;
         }
 
-        // 3. Clic en la Bestia Alada Nazgûl
-        if (Math.abs(cx - this.nazCurX) < 28 && Math.abs(cy - this.nazCurY) < 22) {
+        // 3. Clic en las Bestias Aladas Nazgûl
+        if ((Math.abs(cx - this.nazCurX) < 28 && Math.abs(cy - this.nazCurY) < 22) ||
+            (Math.abs(cx - this.naz2CurX) < 28 && Math.abs(cy - this.naz2CurY) < 22)) {
             this.desataNazgul();
             return true;
         }
@@ -567,9 +571,9 @@ export class Escena {
             }
         }
 
-        // Runas del Anillo Único en Tengwar resplandeciendo en el firmamento volcánico
-        if (this.nocheF > 0.12 || this.wB > 0.15) {
-            const runeOp = (0.22 + 0.16 * Math.sin(t * 0.05)) * Math.max(this.nocheF, this.wB);
+        // Runas del Anillo Único en Tengwar fijas y centradas sobre Barad-dûr (X=195, Y=34)
+        if (this.runasTorre && (this.nocheF > 0.12 || this.wB > 0.15)) {
+            const runeOp = (0.24 + 0.14 * Math.sin(t * 0.05)) * Math.max(this.nocheF, this.wB);
             const runes = [
                 [[1,0],[2,0],[0,1],[2,1],[0,2],[1,2],[2,2],[2,3],[1,4],[2,5]], // Ash
                 [[0,0],[1,0],[2,0],[2,1],[1,2],[0,3],[0,4],[1,4],[2,4]],       // Nazg
@@ -580,10 +584,11 @@ export class Escena {
                 [[1,0],[0,1],[2,1],[0,2],[1,3],[2,3],[2,4],[1,5]],             // Gimb
                 [[0,0],[1,0],[2,1],[1,2],[0,3],[1,4],[2,4],[2,5]]              // Atul
             ];
-            const runeBaseX = Math.round(((t * 0.10) % 320) + 20);
+            // Fijadas y centradas sobre Barad-dûr, sin desplazamiento horizontal
+            const runeStartX = 195 - Math.round((runes.length * 8) / 2);
             for (let rIdx = 0; rIdx < runes.length; rIdx++) {
-                const rx = ((runeBaseX + rIdx * 20) % 360) + 25;
-                const ry = Math.round(34 + Math.sin(t * 0.04 + rIdx * 0.7) * 4);
+                const rx = runeStartX + rIdx * 8;
+                const ry = 34;
                 for (const [dx, dy] of runes[rIdx]) {
                     px(cr, '#fbbf24', runeOp, rx + dx, ry + dy, 1, 1);
                     if (runeOp > 0.25) {
@@ -927,6 +932,36 @@ export class Escena {
         } else {
             px(cr, '#060208', 1.0, nazX - 13, nazY - 2 - wingOffset, 10, 6);
             px(cr, '#060208', 1.0, nazX + 4, nazY - 2 - wingOffset, 10, 6);
+        }
+
+        // Nazgûl 2: Patrullando sobre las laderas del Orodruin en trayectoria opuesta
+        const naz2Angle = t * 0.013 + 3.14;
+        const naz2X = Math.round(375 + Math.cos(naz2Angle) * 80);
+        const naz2Y = Math.round(92 + Math.sin(naz2Angle * 2) * 14);
+        this.naz2CurX = naz2X;
+        this.naz2CurY = naz2Y;
+
+        const facingRight2 = (-Math.sin(naz2Angle) > 0);
+        const aleteo2 = Math.sin(t * 0.35 + 1.2) * 4;
+        const wOff2 = Math.round(aleteo2);
+
+        px(cr, '#060208', 1.0, naz2X - 4, naz2Y, 9, 2);
+        px(cr, '#000000', 1.0, naz2X, naz2Y - 2, 2, 2);
+
+        if (facingRight2) {
+            px(cr, '#060208', 1.0, naz2X + 5, naz2Y - 2, 4, 2);
+            px(cr, '#060208', 1.0, naz2X - 8, naz2Y + 1, 5, 1);
+        } else {
+            px(cr, '#060208', 1.0, naz2X - 8, naz2Y - 2, 4, 2);
+            px(cr, '#060208', 1.0, naz2X + 4, naz2Y + 1, 5, 1);
+        }
+
+        if (wOff2 >= 0) {
+            px(cr, '#060208', 1.0, naz2X - 11, naz2Y - 6 - wOff2, 8, 6);
+            px(cr, '#060208', 1.0, naz2X + 3, naz2Y - 5 - wOff2, 8, 6);
+        } else {
+            px(cr, '#060208', 1.0, naz2X - 11, naz2Y - 1 - wOff2, 8, 5);
+            px(cr, '#060208', 1.0, naz2X + 3, naz2Y - 1 - wOff2, 8, 5);
         }
 
         // 5. EASTER EGG: FRODO Y SAM INFILTRÁNDOSE EN GORGOROTH (Y=304)
