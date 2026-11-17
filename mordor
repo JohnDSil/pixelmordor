@@ -84,7 +84,7 @@ case "${1:-info}" in
             (
                 while true; do
                     if [ -f "$SOUNDS_DIR/ambiente.wav" ]; then
-                        canberra-gtk-play -f "$SOUNDS_DIR/ambiente.wav" 2>/dev/null || pw-play "$SOUNDS_DIR/ambiente.wav" 2>/dev/null || aplay -q "$SOUNDS_DIR/ambiente.wav" 2>/dev/null || true
+                        canberra-gtk-play -f "$SOUNDS_DIR/ambiente.wav" >/dev/null 2>&1 || pw-play "$SOUNDS_DIR/ambiente.wav" >/dev/null 2>&1 || aplay -q "$SOUNDS_DIR/ambiente.wav" >/dev/null 2>&1 || true
                     fi
                     sleep 6
                 done
