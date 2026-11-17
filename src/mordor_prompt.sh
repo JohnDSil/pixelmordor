@@ -3,7 +3,11 @@
 
 __mordor_git_branch() {
     local b
-    if b=$(git symbolic-ref --short HEAD 2>/dev/null); then
+    b=$(git branch --show-current 2>/dev/null)
+    if [ -z "$b" ]; then
+        b=$(git rev-parse --short HEAD 2>/dev/null)
+    fi
+    if [ -n "$b" ]; then
         if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
             echo " \[\033[1;31m\](${b} 🌋)\[\033[0m\]"
         else
@@ -17,7 +21,7 @@ __mordor_play_sound() {
     local f="$HOME/.local/share/gnome-shell/extensions/pixelzen@mosqui1988.github.io/sounds/${snd}.wav"
     [ -f "$f" ] || f="$HOME/.local/share/pixelzen/sounds/${snd}.wav"
     if [ -f "$f" ]; then
-        (canberra-gtk-play -f "$f" 2>/dev/null || pw-play "$f" 2>/dev/null || aplay -q "$f" 2>/dev/null || true) &
+        ( (canberra-gtk-play -f "$f" >/dev/null 2>&1 || pw-play "$f" >/dev/null 2>&1 || aplay -q "$f" >/dev/null 2>&1 || true) & ) 2>/dev/null
     fi
 }
 
