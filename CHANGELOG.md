@@ -5,6 +5,15 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 
 ---
 
+## [1.7.2] - 2026-11-17
+
+### Corregido
+- **🔊 Blindaje Total Contra Mensajes de Fondo en CLI (`mordor`):**
+  - Aplicado desacoplamiento por doble *fork* en la función `suena()` del script principal `mordor`.
+  - Redirección completa de `stdout` y `stderr` a `/dev/null` en bucles ambientales y efectos sonoros para evitar cualquier notificación `[1]+ Hecho` tras ejecutar `clear` u otros comandos en la terminal.
+
+---
+
 ## [1.7.1] - 2026-11-17
 
 ### Corregido
