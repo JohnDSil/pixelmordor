@@ -13,7 +13,7 @@ gset() {
 suena() {
     local s="$SOUNDS_DIR/$1.wav"
     if [ -f "$s" ]; then
-        (canberra-gtk-play -f "$s" 2>/dev/null || pw-play "$s" 2>/dev/null || aplay -q "$s" 2>/dev/null || true) &
+        ( (canberra-gtk-play -f "$s" >/dev/null 2>&1 || pw-play "$s" >/dev/null 2>&1 || aplay -q "$s" >/dev/null 2>&1 || true) & ) 2>/dev/null
     fi
 }
 
