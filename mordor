@@ -436,7 +436,7 @@ else:
             fi
             chmod +x "$HOME/.config/pixelzen/mordor_motd.sh" 2>/dev/null || true
             if [ -f "$HOME/.bashrc" ] && ! grep -q "mordor_motd.sh" "$HOME/.bashrc"; then
-                echo '[ -f "$HOME/.config/pixelzen/mordor_motd.sh" ] && "$HOME/.config/pixelzen/mordor_motd.sh"' >> "$HOME/.bashrc"
+                echo 'if [[ $- == *i* ]] && [ -t 1 ]; then [ -f "$HOME/.config/pixelzen/mordor_motd.sh" ] && "$HOME/.config/pixelzen/mordor_motd.sh"; fi' >> "$HOME/.bashrc"
             fi
             echo -e "\033[1;32m📜 Cita diaria de Tolkien (MOTD) ACTIVADA al abrir cada nueva terminal.\033[0m"
         elif [ "$sub" = "off" ] || [ "$sub" = "desactivar" ]; then

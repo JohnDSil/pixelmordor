@@ -5,6 +5,19 @@ El formato sigue las convenciones de [Keep a Changelog](https://keepachangelog.c
 
 ---
 
+## [1.7.1] - 2026-11-17
+
+### Corregido
+- **🔔 Campana de Terminal Desacoplada (`mordor_prompt.sh`):**
+  - Subproceso de reproducción de audio desacoplado mediante técnica de doble *fork* (`( ( ... ) & )`), eliminando completamente las notificaciones de tareas de fondo de Bash (`[1] <PID>` y `[1]+ Hecho`).
+- **🐚 Detección Robusta de Ramas Git:**
+  - Uso de `git branch --show-current` con fallback a `git rev-parse --short HEAD` para dar soporte a repositorios en estado de HEAD desacoplado sin producir errores de consola.
+- **📜 Protección de Salida MOTD:**
+  - Envoltura estricta para terminales interactivas (`-t 1`), evitando interferencias en conexiones no interactivas, túneles SSH y tuberías.
+  - Corrección de la integración de citas en `~/.bashrc` desde el CLI `mordor motd on`.
+
+---
+
 ## [1.7.0] - 2026-11-13
 
 ### Añadido
